@@ -14,10 +14,13 @@ public class Level1 {
 				+ "( 0 )\"\"\"\\\r\n"
 				+ "|\"^\"`    |\r\n"
 				+ "||_/=\\\\__|");
-		int a =2;
-		int b =1;
+		int a =6;
+		int b =3;
 		System.out.println(a+b);
 		System.out.println(a-b);
+		System.out.println(a*b);
+		System.out.println(a/b);
+		System.out.println(b%a);
 		
 	}
 }
