@@ -1,1 +1,1 @@
-# Backjoon algorithm
+# Baekjoon algorithm
