@@ -1,5 +1,9 @@
 package oh;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 public class Level2 {
 	public static void main(String[] args) {
 		int a = 12, b = 10;
@@ -44,6 +48,43 @@ public class Level2 {
 		}
 		else System.out.println("0");
 		System.out.print((y%4==0)?((y%400==0)?"1":(y%100==0)?"0":"1"):"0");
+		
+		
+		
+//흔한 수학 문제 중 하나는 주어진 점이 어느 사분면에 속하는지 알아내는 것이다. 사분면은 아래 그림처럼 1부터 4까지 번호를 갖는다. "Quadrant n"은 "제n사분면"이라는 뜻이다.
+// 1사분면 ++, 2사분면 -,+ 3사분면 -, - 4사분면 -, + 
+		Scanner scanner = new Scanner(System.in);
+		int X = scanner.nextInt();
+		int Y = scanner.nextInt();
+		
+		if(X > 0) {
+			if(Y > 0) {
+				System.out.print(1);
+			} 
+			else {
+				System.out.print(4);
+			}
+		} 
+		
+		else {
+			if(Y > 0) {
+				System.out.print(2);
+			} 
+			else {
+				System.out.print(3);
+			}
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	}
 		
 	}
