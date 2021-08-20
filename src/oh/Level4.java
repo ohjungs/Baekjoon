@@ -17,6 +17,11 @@ public class Level4 {
 				break;
 		}	System.out.println(num1+num2);
 	}
+		while(sc.hasNextInt()) {
+		int a = sc.nextInt();
+		int b = sc.nextInt();
+		System.out.println(a+b);
+		}
 
 	}
 }
