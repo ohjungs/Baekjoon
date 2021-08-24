@@ -13,10 +13,23 @@ public class Level5_3 {
 		 * 줄에는 A × B × C의 결과에 0 이 몇 번 쓰였는지 출력한다. 마찬가지로 둘째 줄부터 열 번째 줄까지 A × B × C의 결과에
 		 * 1부터 9까지의 숫자가 각각 몇 번 쓰였는지 차례로 한 줄에 하나씩 출력한다.
 		 */
-		Scanner sc = new Scanner(System.in);
-		int n = sc.nextInt();
-		int [] arr = new int[n];
 		
+		Scanner sc = new Scanner(System.in);
+		int A = sc.nextInt();
+		int B = sc.nextInt();
+		int C = sc.nextInt();
+		sc.close();
+		
+		int[] counts = new int[10];
+		int number = A * B * C;
+		while (number > 0) {
+			counts[number % 10]++;
+			number /= 10;
+		}
+		
+		for (int i = 0; i < counts.length; ++i) {
+			System.out.println(counts[i]);
+		
+		}
 	}
-
 }
