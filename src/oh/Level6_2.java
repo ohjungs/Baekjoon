@@ -18,6 +18,29 @@ public class Level6_2 {
 		 * 10000보다 작거나 같은 셀프 넘버를 한 줄에 하나씩 출력하는 프로그램을 작성하시오.
 		 */
 		
+boolean[] isNotSelfNumber = new boolean[10001];
+		
+		for (int i = 1; i <= 10000; ++i) {
+			int dn = getDn(i);
+			if (dn <= 10000) {
+				isNotSelfNumber[dn] = true;				
+			}
+		}
+		
+		for (int i = 1; i < isNotSelfNumber.length; ++i) {
+			if (!isNotSelfNumber[i]) {
+				System.out.println(i);				
+			}
+		}
+	}
+	
+	private static int getDn(int n) {
+		int dn = n;
+		while(n > 0) {
+			dn += n % 10;
+			n /= 10;
+		}
+		return dn;
 	}
 
 }
