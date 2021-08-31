@@ -13,7 +13,7 @@ public class Level6_3 {
 		Scanner sc = new Scanner(System.in);
 		int n = sc.nextInt();
 		sc.close();
-		  
+		    
 		if (n < 100) {
 			System.out.println(n);
 		} else {
