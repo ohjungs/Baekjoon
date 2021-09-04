@@ -11,7 +11,7 @@ public class Level7_3 {
 		 
 		 
 		int[] arr = new int[26];
-		
+		  
 		for(int i = 0; i < arr.length; i++) {
 			arr[i] = -1;
 		}
