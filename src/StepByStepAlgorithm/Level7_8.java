@@ -1,5 +1,7 @@
 package StepByStepAlgorithm;
 
+import java.util.Scanner;
+
 public class Level7_8 {
 	/*
 	 * 5622번 다이얼 문제 상근이의 할머니는 아래 그림과 같이 오래된 다이얼 전화기를 사용한다.
@@ -13,4 +15,68 @@ public class Level7_8 {
 	 * 입력 첫째 줄에 알파벳 대문자로 이루어진 단어가 주어진다. 단어의 길이는 2보다 크거나 같고, 15보다 작거나 같다.
 	 * 출력 첫째 줄에 다이얼을 걸기 위해서 필요한 최소 시간을 출력한다.
 	 */
+	public static void main(String[] args) {
+Scanner in = new Scanner(System.in);
+		
+		String s = in.nextLine();
+ 
+		int count = 0;
+		int k = s.length();
+        
+		for(int i = 0; i < k; i++) {
+        
+			switch(s.charAt(i)) {
+            
+			case 'A' : case 'B': case 'C' : 
+				count += 3;
+				break;
+                
+			case 'D' : case 'E': case 'F' :
+				count += 4; 
+				break;
+                
+			case 'G' : case 'H': case 'I' :
+				count += 5; 
+				break;
+                
+			case 'J' : case 'K': case 'L' : 
+				count += 6;
+				break;
+                
+			case 'M' : case 'N': case 'O' :
+				count += 7;
+				break;
+                
+			case 'P' : case 'Q': case 'R' : case 'S' : 
+				count += 8; 
+				break;
+                
+			case 'T' : case 'U': case 'V' : 
+				count += 9;
+				break;
+                
+			case 'W' : case 'X': case 'Y' : case 'Z' : 
+				count += 10;
+				break;
+			}
+		}		
+		System.out.print(count);
+		/*
+		 * int count = 0; int value;
+		 * 
+		 * while(true) {
+		 * 
+		 * value = System.in.read();
+		 * 
+		 * if(value == '\n') { break; }
+		 * 
+		 * if(value < 68) count += 3; else if(value < 71) count += 4; else if(value <
+		 * 74) count += 5; else if(value < 77) count += 6; else if(value < 80) count +=
+		 * 7; else if(value < 84) count += 8; else if(value < 87) count += 9; else count
+		 * += 10;
+		 * 
+		 * 
+		 * } System.out.print(count);
+		 */
+	}
 }
