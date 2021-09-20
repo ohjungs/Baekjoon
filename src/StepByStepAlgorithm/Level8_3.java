@@ -1,5 +1,7 @@
 package StepByStepAlgorithm;
 
+import java.util.Scanner;
+
 public class Level8_3 {
 	/*
 	 * 문제 1193 분수찾기 무한히 큰 배열에 다음과 같이 분수들이 적혀있다.
@@ -14,4 +16,22 @@ public class Level8_3 {
 	 * 
 	 * 출력 첫째 줄에 분수를 출력한다.
 	 */
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int a = sc.nextInt();
+		int cnt = 0;
+		int n = 0;
+		while (true) {
+			n++;
+			cnt +=n;
+			if(cnt>=a) {
+				if(n%2==0) {
+					System.out.println(a-cnt+n+"/"+(cnt-a+1));
+				}else {
+					System.out.println((cnt-a+1)+"/"+(a-cnt+n));
+				}
+				break;
+			}
+		}
+	}
 }
