@@ -1,5 +1,7 @@
 package StepByStepAlgorithm;
 
+import java.util.Scanner;
+
 public class Level8_9 {
 	/*
 	 * 1011번 Fly me to the Alpha Centauri 문제 우현이는 어린 시절, 지구 외의 다른 행성에서도 인류들이 살아갈 수
@@ -17,4 +19,31 @@ public class Level8_9 {
 	 * 정수로 주어지며, x는 항상 y보다 작은 값을 갖는다. (0 ≤ x < y < 231) 출력 각 테스트 케이스에 대해 x지점으로부터
 	 * y지점까지 정확히 도달하는데 필요한 최소한의 공간이동 장치 작동 횟수를 출력한다.
 	 */
+	public static void main(String[] args) {
+		Scanner in = new Scanner(System.in);
+		 
+		int T = in.nextInt();	// 테스트 케이스 
+		
+		for(int i = 0; i < T; i++) {
+        
+			int X = in.nextInt();
+			int Y = in.nextInt();
+			
+			int distance = Y - X;	// 거리
+			
+			int max = (int)Math.sqrt(distance);	// 소수점 버림
+            
+			if(max == Math.sqrt(distance)) {
+				System.out.println(max * 2 - 1);
+			}
+			else if(distance <= max * max + max) {
+				System.out.println(max * 2);
+			}
+			else {
+				System.out.println(max * 2 + 1);
+			}
+			
+		}
+		
+	}
 }
