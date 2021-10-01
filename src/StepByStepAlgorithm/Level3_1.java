@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
-public class Level3 {
+public class Level3_1 {
 	public static void main(String[] args) throws Exception {
 		Scanner sc = new Scanner(System.in);
 		int n = sc.nextInt();

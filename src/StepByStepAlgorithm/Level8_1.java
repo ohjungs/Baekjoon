@@ -2,7 +2,7 @@ package StepByStepAlgorithm;
 
 import java.util.Scanner;
 
-public class Level8 {
+public class Level8_1 {
 /* 1712번 손익분기점.
  * 문제
 월드전자는 노트북을 제조하고 판매하는 회사이다. 노트북 판매 대수에 상관없이 매년 임대료, 재산세, 보험료, 급여 등 A만원의 고정 비용이 들며, 한 대의 노트북을 생산하는 데에는 재료비와 인건비 등 총 B만원의 가변 비용이 든다고 한다.

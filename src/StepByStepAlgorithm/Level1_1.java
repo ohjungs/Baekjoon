@@ -1,6 +1,6 @@
 package StepByStepAlgorithm;
 
-public class Level1 {
+public class Level1_1 {
 	public static void main(String[] args) {
 		System.out.println("Hello World!");
 		System.out.println("강한친구 대한육군");

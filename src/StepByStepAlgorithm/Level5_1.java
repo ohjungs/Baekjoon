@@ -3,7 +3,7 @@ package StepByStepAlgorithm;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class Level5 {
+public class Level5_1 {
 
 	public static void main(String[] args) {
 		/*
