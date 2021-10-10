@@ -1,5 +1,7 @@
 package StepByStepAlgorithm;
 
+import java.util.Scanner;
+
 public class Level9_6 {
 	/*
 	 * 9020번 골드바흐의 추측 문제 1보다 큰 자연수 중에서 1과 자기 자신을 제외한 약수가 없는 자연수를 소수라고 한다. 예를 들어, 5는
@@ -17,4 +19,52 @@ public class Level9_6 {
 	 * 
 	 * 출력 각 테스트 케이스에 대해서 주어진 n의 골드바흐 파티션을 출력한다. 출력하는 소수는 작은 것부터 먼저 출력하며, 공백으로 구분한다.
 	 */
-}
+
+		/*
+			false : 소수
+			range : 0 ~ 10000
+		*/
+		public static boolean[] prime = new boolean[10001];
+
+		public static void main(String[] args) {
+			 
+			Scanner in = new Scanner(System.in);
+			
+			get_prime();
+	 
+			int T = in.nextInt();	// 테스트케이스
+	 
+			while (T-- > 0) {
+				int n = in.nextInt();
+				int first_partition = n / 2;
+				int second_partition = n / 2;
+	 
+				while (true) {
+	            
+					// 두 파티션이 모두 소수일 경우
+					if (!prime[first_partition] && !prime[second_partition]) {
+						System.out.println(first_partition + " " + second_partition);
+						break;
+					}
+					first_partition--;
+					second_partition++;
+				}
+			}
+	 
+		}
+	 
+		// 에라토스테네스의 체
+		public static void get_prime() {
+			prime[0] = prime[1] = true;
+	 
+			for (int i = 2; i <= Math.sqrt(prime.length); i++) {
+				if (prime[i])
+					continue;
+				for (int j = i * i; j < prime.length; j += i) {
+					prime[j] = true;
+				}
+			}
+		}
+	 
+	}
+
