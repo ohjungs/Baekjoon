@@ -1,5 +1,7 @@
 package StepByStepAlgorithm;
 
+import java.util.Scanner;
+
 public class Level9_10 {
 
 	public static void main(String[] args) {
@@ -23,7 +25,13 @@ public class Level9_10 {
 		 * 출력 첫째 줄에는 유클리드 기하학에서 반지름이 R인 원의 넓이를, 둘째 줄에는 택시 기하학에서 반지름이 R인 원의 넓이를 출력한다.
 		 * 정답과의 오차는 0.0001까지 허용한다.
 		 */
-
+		Scanner in = new Scanner(System.in);
+		 
+		double R = in.nextDouble();	// 반지름 R
+		in.close();
+		
+		System.out.println(R * R * Math.PI);	// 유클리드 원의 넓이
+		System.out.println(2 * R * R);		// 택시기하학 원의 넓이
 
 	}
 
