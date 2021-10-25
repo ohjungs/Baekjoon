@@ -1,5 +1,7 @@
 package StepByStepAlgorithm;
 
+import java.util.Scanner;
+
 public class Level10_2 {
 	/*
 	 * 10870번 파보나치 수 5 문제 피보나치 수는 0과 1로 시작한다. 0번째 피보나치 수는 0이고, 1번째 피보나치 수는 1이다. 그 다음
@@ -18,8 +20,18 @@ public class Level10_2 {
 	 * 출력 첫째 줄에 n번째 피보나치 수를 출력한다.
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		Scanner in = new Scanner(System.in);
+		 
+		int N = in.nextInt();
+ 
+		System.out.println(fibonacci(N));
+ 
 	}
-
+ 
+	// 피보나치 함수
+	static int fibonacci(int N) {
+		if (N == 0)	return 0;
+		if (N == 1)	return 1;
+		return fibonacci(N - 1) + fibonacci(N - 2);
+	}
 }
