@@ -1,5 +1,7 @@
 package StepByStepAlgorithm;
 
+import java.util.Scanner;
+
 public class Level11_5 {
 	/*
 	 * 1436번 영화감동 숌
@@ -23,4 +25,19 @@ public class Level11_5 {
 	 * 
 	 * 출력 첫째 줄에 N번째 영화의 제목에 들어간 수를 출력한다.
 	 */
+	public static void main(String[] args) {
+		Scanner in = new Scanner(System.in);
+		int N = in.nextInt();
+ 
+		int num = 666;
+		int count = 1;
+        
+		while(count != N) {
+			num++;
+			if(String.valueOf(num).contains("666")) {
+				count++;
+			}
+		}
+		System.out.println(num);
+	}
 }
