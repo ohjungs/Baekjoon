@@ -1,5 +1,8 @@
 package StepByStepAlgorithm;
 
+import java.util.Arrays;
+import java.util.Scanner;
+
 public class Level12_7 {
 	/*
 	 * 11651 좌표 정렬하기 2 문제 2차원 평면 위의 점 N개가 주어진다. 좌표를 y좌표가 증가하는 순으로, y좌표가 같으면 x좌표가
@@ -11,6 +14,30 @@ public class Level12_7 {
 	 * 출력 첫째 줄부터 N개의 줄에 점을 정렬한 결과를 출력한다.
 	 */
 	public static void main(String[] args) {
+		 
+		Scanner in = new Scanner(System.in);
 		
+		int N = in.nextInt();
+		
+		int[][] arr = new int[N][2];
+		
+		for(int i = 0; i < N; i++) {
+			// 위치 주의
+			arr[i][1] = in.nextInt();
+			arr[i][0] = in.nextInt();
+		}
+		
+		Arrays.sort(arr, (e1, e2) -> {
+			if(e1[0] == e2[0]) {
+				return e1[1] - e2[1];
+			} else {
+				return e1[0] - e2[0];
+			}
+		});
+		
+		for(int i = 0; i < N; i++) {
+			// 위치 주의
+			System.out.println(arr[i][1] + " " + arr[i][0]);
+		}
 	}
 }
