@@ -1,5 +1,7 @@
 package StepByStepAlgorithm;
 
+import java.util.Scanner;
+
 public class Level14_2 {
 	/*
 	 * 15650번 N과 M(2) 문제 자연수 N과 M이 주어졌을 때, 아래 조건을 만족하는 길이가 M인 수열을 모두 구하는 프로그램을
@@ -13,7 +15,35 @@ public class Level14_2 {
 	 * 
 	 * 수열은 사전 순으로 증가하는 순서로 출력해야 한다.
 	 */
+	public static int[] arr;
+	public static int N, M;
 	public static void main(String[] args) {
-		
+		Scanner in = new Scanner(System.in);
+		 
+		N = in.nextInt();
+		M = in.nextInt();
+ 
+		arr = new int[M];
+        
+		dfs(1, 0);
+ 
+	}
+ 
+	public static void dfs(int at, int depth) {
+ 
+		if (depth == M) {
+			for (int val : arr) {
+				System.out.print(val + " ");
+			}
+			System.out.println();
+			return;
+		}
+        
+		for (int i = at; i <= N; i++) {
+ 
+			arr[depth] = i;
+			dfs(i + 1, depth + 1);
+ 
+		}	
 	}
 }
