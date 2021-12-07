@@ -1,7 +1,10 @@
 package StepByStepAlgorithm;
 
+import java.util.Scanner;
+
 public class Level14_7 {
 	/*
+	 * 14888번 연산자 끼워넣기 
 	 * 문제 N개의 수로 이루어진 수열 A1, A2, ..., AN이 주어진다. 또, 수와 수 사이에 끼워넣을 수 있는 N-1개의 연산자가
 	 * 주어진다. 연산자는 덧셈(+), 뺄셈(-), 곱셈(×), 나눗셈(÷)으로만 이루어져 있다.
 	 * 
@@ -25,5 +28,61 @@ public class Level14_7 {
 	 * 같고, 10억보다 작거나 같은 결과가 나오는 입력만 주어진다. 또한, 앞에서부터 계산했을 때, 중간에 계산되는 식의 결과도 항상
 	 * -10억보다 크거나 같고, 10억보다 작거나 같다.
 	 */
+	public static int MAX = Integer.MIN_VALUE;	// 최댓값 
+		public static int MIN = Integer.MAX_VALUE;	// 최솟값 
+		public static int[] operator = new int[4];	// 연산자 개수 
+		public static int[] number;					// 숫자 
+		public static int N;						// 숫자 개수 
+	 
+		public static void main(String[] args) {
+	 
+			Scanner in = new Scanner(System.in);
+	 
+			N = in.nextInt();
+			number = new int[N];
+	 
+			// 숫자 입력
+			for (int i = 0; i < N; i++) {
+				number[i] = in.nextInt();
+			}
+	 
+			// 연산자 입력
+			for (int i = 0; i < 4; i++) {
+				operator[i] = in.nextInt();
+			}
+	 
+			dfs(number[0], 1);
+	 
+			System.out.println(MAX);
+			System.out.println(MIN);
+	 
+		}
+	 
+		public static void dfs(int num, int idx) {
+			if (idx == N) {
+				MAX = Math.max(MAX, num);
+				MIN = Math.min(MIN, num);
+				return;
+			}
+	 
+			for (int i = 0; i < 4; i++) {
+				// 연산자 개수가 1개 이상인 경우
+				if (operator[i] > 0) {
+	 
+					// 해당 연산자를 1 감소시킨다.
+					operator[i]--;
+	 
+					switch (i) {
+	 
+					case 0:	dfs(num + number[idx], idx + 1);	break;
+					case 1:	dfs(num - number[idx], idx + 1);	break;
+					case 2:	dfs(num * number[idx], idx + 1);	break;
+					case 3:	dfs(num / number[idx], idx + 1);	break;
+	 
+					}
+					// 재귀호출이 종료되면 다시 해당 연산자 개수를 복구한다.
+					operator[i]++;
+				}
+			}
 	
 }
