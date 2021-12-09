@@ -1,5 +1,10 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
 public class Level14_8 {
 	/* 14489번 스타트 링크
 	 * 스타트와 링크 시간 제한 메모리 제한 제출 정답 맞힌 사람 정답 비율 2 초 512 MB 50020 25333 14734 47.308%
@@ -27,4 +32,69 @@ public class Level14_8 {
 	 * 
 	 * 출력 첫째 줄에 스타트 팀과 링크 팀의 능력치의 차이의 최솟값을 출력한다.
 	 */
+	static int N;
+	static int min = Integer.MAX_VALUE;
+	static int[][] arr;
+	static boolean[] visit;
+	
+	public static void main(String[] args) throws IOException {
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		arr = new int[N][N];
+		visit = new boolean[N];
+		
+		for(int i = 0 ; i < N ; i++) {
+		StringTokenizer str = new StringTokenizer(br.readLine());
+		for(int j = 0 ; str.hasMoreTokens();j++) {
+			arr[i][j]= Integer.parseInt(str.nextToken());
+		}
+		}
+		
+		dfs(0,0);
+		
+		System.out.println(min);
+		
+
+}
+	public static void dfs(int depth, int a) {
+		
+		if(depth == N/2) {
+			diff();
+			return;
+		}
+		
+		for(int i = a ; i < N ; i++) {
+			visit[i]=true;
+			dfs(depth+1, i+1);
+			visit[i]=false;
+		}	
+	}
+	
+	public static void diff() {
+		int start = 0;
+		int link = 0;
+		for(int i = 0 ; i < N-1 ; i++) {
+			for(int j = i+1 ; j < N ; j++) {
+				if(visit[i]==true && visit[j]==true) {
+					start += arr[i][j];
+					start += arr[j][i];
+				}
+				else if(visit[i]==false && visit[j]==false) {
+					link += arr[i][j];
+					link += arr[j][i];
+				}
+				
+			}
+		}
+		
+		int val = Math.abs(start - link);
+		
+		if(val == 0) {
+			System.out.println(val);
+			System.exit(0);
+		}
+		
+		min=Math.min(min,val);
+	}
 }
