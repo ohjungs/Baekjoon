@@ -1,7 +1,9 @@
 package StepByStepAlgorithm;
 
+import java.util.Scanner;
+
 public class Level15_1 {
-	/*
+	/* 1003번 파보나치 함수
 	 * 문제 다음 소스는 N번째 피보나치 수를 구하는 C++ 함수이다.
 	 * 
 	 * int fibonacci(int n) { if (n == 0) { printf("0"); return 0; } else if (n ==
@@ -20,4 +22,37 @@ public class Level15_1 {
 	 * 각 테스트 케이스는 한 줄로 이루어져 있고, N이 주어진다. N은 40보다 작거나 같은 자연수 또는 0이다.
 	 * 
 	 * 출력 각 테스트 케이스마다 0이 출력되는 횟수와 1이 출력되는 횟수를 공백으로 구분해서 출력한다.
-	 */}
+	 */
+static Integer[][] dp = new Integer[41][2];
+	
+	public static void main(String[] args) {
+		Scanner in = new Scanner(System.in);
+		
+		dp[0][0] = 1;	// N=0 일 때의 0 호출 횟수
+		dp[0][1] = 0;	// N=0 일 때의 1 호출 횟수
+		dp[1][0] = 0;	// N=1 일 때의 0 호출 횟수
+		dp[1][1] = 1;	// N=1 일 때의 1 호출 횟수
+		
+		int T = in.nextInt();
+        
+		while(T-- > 0){
+			int N = in.nextInt();
+			fibonacci(N);
+			System.out.println(dp[N][0] + " " + dp[N][1]);
+		}
+		
+	}
+	
+	static Integer[] fibonacci(int N) {
+		// N에 대한 0, 1의 호출 횟수가 없을 떄(탐색하지 않은 값일 때)
+		if(dp[N][0] == null || dp[N][1] == null) {
+			// 각 N에 대한 0 호출 횟수와 1 호출 횟수를 재귀호출한다.
+			dp[N][0] = fibonacci(N - 1)[0] + fibonacci(N - 2)[0];
+			dp[N][1] = fibonacci(N - 1)[1] + fibonacci(N - 2)[1];
+		}
+		// N에 대한 0과 1, 즉 [N][0]과 [N][1] 을 담고있는 [N]을 반환한다.
+		return dp[N];
+ 
+	}
+ 	
+}
