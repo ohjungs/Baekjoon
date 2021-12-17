@@ -1,5 +1,7 @@
 package StepByStepAlgorithm;
 
+import java.util.Scanner;
+
 public class Level15_4 {
 	/*
 	 * 9461번 파도반 수열 문제 오른쪽 그림과 같이 삼각형이 나선 모양으로 놓여져 있다. 첫 삼각형은 정삼각형으로 변의 길이는 1이다. 그
@@ -15,4 +17,30 @@ public class Level15_4 {
 	 * 
 	 * 출력 각 테스트 케이스마다 P(N)을 출력한다.
 	 */
+	public static Long[] seq = new Long[101];
+	 
+	public static void main(String[] args) {
+		
+		Scanner in = new Scanner(System.in);
+		
+		seq[0] = 0L;
+		seq[1] = 1L;
+		seq[2] = 1L;
+		seq[3] = 1L;
+		
+		int T = in.nextInt();
+		
+		while(T-- > 0) {
+			int N = in.nextInt();
+			System.out.println(padovan(N));
+		}
+		
+	}
+	
+	public static long padovan(int N) {
+		if(seq[N] == null) {	// 탐색하지 않은 인덱스일 경우 재귀호출
+			seq[N] = padovan(N - 2) + padovan(N - 3);
+		}
+		return seq[N];
+	}
 }
