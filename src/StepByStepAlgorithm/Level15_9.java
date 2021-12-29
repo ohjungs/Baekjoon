@@ -1,6 +1,8 @@
 package StepByStepAlgorithm;
 
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Level15_9 {
 	/*
@@ -20,10 +22,10 @@ public class Level15_9 {
 	static int N;
 	final static long MOD = 1000000000;
 	
-	public static void main(String[] args) {
-		Scanner in = new Scanner(System.in);
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
-		N = in.nextInt();
+		N = Integer.parseInt(br.readLine());
 		dp = new Long[N + 1][10];
 		
 		// 첫번째 자릿수는 1로 초기화 
