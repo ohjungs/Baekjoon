@@ -1,5 +1,7 @@
 package StepByStepAlgorithm;
 
+import java.util.Scanner;
+
 public class Level15_10 {
 	/*
 	 * 2156번 포도주 시식 문제 효주는 포도주 시식회에 갔다. 그 곳에 갔더니, 테이블 위에 다양한 포도주가 들어있는 포도주 잔이 일렬로 놓여
@@ -18,4 +20,42 @@ public class Level15_10 {
 	 * 
 	 * 출력 첫째 줄에 최대로 마실 수 있는 포도주의 양을 출력한다.
 	 */
+	static Integer[] dp;
+	static int[] arr;
+    
+	public static void main(String[] args) {
+    
+		Scanner in = new Scanner(System.in);
+		
+		int N = in.nextInt();
+		
+		dp = new Integer[N + 1];
+		arr = new int[N + 1];
+		
+		for(int i = 1; i < N + 1; i++) {
+			arr[i] = in.nextInt();
+		}
+ 
+		dp[0] = 0;
+		dp[1] = arr[1];
+		
+		/*
+		 *  (N이 1로 주어질 수 있으므로 이럴 때를 위해 조건식을 달아둔다.
+		 *  또한 dp[2]는 어떤 경우에도 첫 번째와 두 번째를 합한 것이 최댓값이다. 
+		 */
+		if(N > 1) {
+			dp[2] = arr[1] + arr[2];
+		}
+		
+		System.out.println(recur(N));
+	}
+	
+	static int recur(int N) {
+		
+		if(dp[N] == null) {
+			dp[N] = Math.max(Math.max(recur(N - 2), recur(N - 3) + arr[N - 1]) + arr[N], recur(N - 1));
+		}
+		
+		return dp[N];
+	}
 }
