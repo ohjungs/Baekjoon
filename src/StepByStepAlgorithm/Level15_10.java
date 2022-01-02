@@ -1,6 +1,8 @@
 package StepByStepAlgorithm;
 
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Level15_10 {
 	/*
@@ -22,20 +24,18 @@ public class Level15_10 {
 	 */
 	static Integer[] dp;
 	static int[] arr;
-    
-	public static void main(String[] args) {
-    
-		Scanner in = new Scanner(System.in);
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
-		int N = in.nextInt();
+		int N = Integer.parseInt(br.readLine());
 		
 		dp = new Integer[N + 1];
 		arr = new int[N + 1];
 		
 		for(int i = 1; i < N + 1; i++) {
-			arr[i] = in.nextInt();
+			arr[i] = Integer.parseInt(br.readLine());
 		}
- 
+		
 		dp[0] = 0;
 		dp[1] = arr[1];
 		
@@ -57,5 +57,4 @@ public class Level15_10 {
 		}
 		
 		return dp[N];
-	}
-}
+	}}
