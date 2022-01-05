@@ -1,6 +1,9 @@
 package StepByStepAlgorithm;
 
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Level15_11 {
 	/*
@@ -15,24 +18,26 @@ public class Level15_11 {
 	 * 
 	 * 출력 첫째 줄에 수열 A의 가장 긴 증가하는 부분 수열의 길이를 출력한다.
 	 */
+
 	static int[] seq;
 	static Integer[] dp;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		
-		Scanner in = new Scanner(System.in);
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
-		int N = in.nextInt();
+		int N = Integer.parseInt(br.readLine());
 		
 		seq = new int[N];
 		dp = new Integer[N];
 		
+		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 		
 		for(int i = 0; i < N; i++) {
-			seq[i] = in.nextInt();
+			seq[i] = Integer.parseInt(st.nextToken());
 		}
 		
-		// 0 ~ N-1 까지 모든 부분수열 탐색 
+		// 0 ~ N-1 까지 탐색 
 		for(int i = 0; i < N; i++) {
 			LIS(i);
 		}
