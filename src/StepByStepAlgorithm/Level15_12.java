@@ -1,6 +1,9 @@
 package StepByStepAlgorithm;
 
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Level15_12 {
 	/*
@@ -17,23 +20,25 @@ public class Level15_12 {
 	 * 
 	 * 출력 첫째 줄에 수열 A의 부분 수열 중에서 가장 긴 바이토닉 수열의 길이를 출력한다.
 	 */
+
 	static Integer[] r_dp;
 	static Integer[] l_dp;
 	static int[] seq;
  
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
  
-		Scanner in = new Scanner(System.in);
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
  
-		int N = in.nextInt();
-        
+		int N = Integer.parseInt(br.readLine());
+ 
 		r_dp = new Integer[N];	// LIS dp
 		l_dp = new Integer[N];	// LDS dp
 		seq = new int[N];
  
+		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
  
 		for (int i = 0; i < N; i++) {
-			seq[i] = in.nextInt();
+			seq[i] = Integer.parseInt(st.nextToken());
 		}
  
 		for (int i = 0; i < N; i++) {
