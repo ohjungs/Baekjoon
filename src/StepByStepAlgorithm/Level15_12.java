@@ -1,6 +1,9 @@
 package StepByStepAlgorithm;
 
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Level15_12 {
 	/*
@@ -23,19 +26,21 @@ public class Level15_12 {
 	static int[] r_dp;
 	static int[] l_dp;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
  
-		Scanner in = new Scanner(System.in);
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
  
-		N = in.nextInt();
+		N = Integer.parseInt(br.readLine());
 		
 		r_dp = new int[N];	// LIS
 		l_dp = new int[N];	// LDS
 		seq = new int[N];
 		
  
+		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+ 
 		for (int i = 0; i < N; i++) {
-			seq[i] = in.nextInt();
+			seq[i] = Integer.parseInt(st.nextToken());
 		}
  
 		LIS();
