@@ -1,5 +1,12 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.StringTokenizer;
+
 public class Level15_13 {
 	/*
 	 * 2565번 전깃줄 문제 두 전봇대 A와 B 사이에 하나 둘씩 전깃줄을 추가하다 보니 전깃줄이 서로 교차하는 경우가 발생하였다. 합선의
@@ -12,4 +19,74 @@ public class Level15_13 {
 	 * B전봇대와 연결되는 위치의 번호가 차례로 주어진다. 위치의 번호는 500 이하의 자연수이고, 같은 위치에 두 개 이상의 전깃줄이 연결될 수
 	 * 없다. 출력 첫째 줄에 남아있는 모든 전깃줄이 서로 교차하지 않게 하기 위해 없애야 하는 전깃줄의 최소 개수를 출력한다.
 	 */
+	static Integer[] dp;
+	static int[][] wire;
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		int N = Integer.parseInt(br.readLine());
+		
+		dp = new Integer[N];
+		wire = new int[N][2];
+		
+		StringTokenizer st;
+		
+		for(int i = 0; i < N; i++) {
+			st = new StringTokenizer(br.readLine(), " ");
+			
+			wire[i][0] = Integer.parseInt(st.nextToken());
+			wire[i][1] = Integer.parseInt(st.nextToken());
+		}
+		
+		// 첫 번째 원소(A전봇대)를 기준으로 오름차순으로 정
+		Arrays.sort(wire, new Comparator<int[]>() {
+			@Override
+			public int compare(int[] o1, int[] o2) {
+				return o1[0] - o2[0];
+			}
+		});
+		
+ 
+ 
+		int max = 0;
+		
+		/*
+		 *  i번째 A전봇를 기준으로 연결가능한 개수 탐색
+		 *  및 최댓값 찾기
+		 */
+		 
+		for(int i = 0; i < N; i++) {
+			max = Math.max(recur(i), max);
+		}
+		
+		// 전선 개수 - 쵀댓값 
+		System.out.println(N - max);
+		
+	}
+	
+	
+	static int recur(int N) {
+		
+		// 탐색하지 않았던 위치라면 
+		if(dp[N] == null) {
+			
+			dp[N] = 1;	// 최솟값 1로 초기화 
+			
+			// A의 N번째와 이후의 전봇대들 비교 
+			for(int i = N + 1; i < dp.length; i++) {
+				
+				/*
+				 *  A전봇대의 N번째 전선이 연결되어있는 B전봇대보다 A의 i번째
+				 *  전봇대의 전선이 이어진 B전봇대가 뒤에 있을 경우 
+				 *  전선을 설치할 수 있음 
+				 */
+				if(wire[N][1] < wire[i][1]) {
+					// 연결 가능한 전선의 경우의 수 중 큰 값을 dp에 저장한다.
+					dp[N] = Math.max(dp[N], recur(i) + 1);
+				}
+			}
+		}
+		return dp[N];
+	}
 }
