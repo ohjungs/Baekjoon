@@ -1,11 +1,8 @@
 package StepByStepAlgorithm;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.StringTokenizer;
+import java.util.Scanner;
 
 public class Level15_13 {
 	/*
@@ -22,21 +19,17 @@ public class Level15_13 {
 	static Integer[] dp;
 	static int[][] wire;
 	
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	public static void main(String[] args) {
+		Scanner in = new Scanner(System.in);
 		
-		int N = Integer.parseInt(br.readLine());
+		int N = in.nextInt();
 		
 		dp = new Integer[N];
 		wire = new int[N][2];
 		
-		StringTokenizer st;
-		
 		for(int i = 0; i < N; i++) {
-			st = new StringTokenizer(br.readLine(), " ");
-			
-			wire[i][0] = Integer.parseInt(st.nextToken());
-			wire[i][1] = Integer.parseInt(st.nextToken());
+			wire[i][0] = in.nextInt();
+			wire[i][1] = in.nextInt();
 		}
 		
 		// 첫 번째 원소(A전봇대)를 기준으로 오름차순으로 정
@@ -47,7 +40,6 @@ public class Level15_13 {
 			}
 		});
 		
- 
  
 		int max = 0;
 		
