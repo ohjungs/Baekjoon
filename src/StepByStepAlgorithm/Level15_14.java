@@ -1,6 +1,8 @@
 package StepByStepAlgorithm;
 
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Level15_14 {
 	/*
@@ -13,12 +15,12 @@ public class Level15_14 {
 	 * 
 	 * 출력 첫째 줄에 입력으로 주어진 두 문자열의 LCS의 길이를 출력한다.
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		 
-		Scanner in = new Scanner(System.in);
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
-		char[] str1 = in.nextLine().toCharArray();
-		char[] str2 = in.nextLine().toCharArray();
+		char[] str1 = br.readLine().toCharArray();
+		char[] str2 = br.readLine().toCharArray();
 		
 		int length_1 = str1.length;
 		int length_2 = str2.length;
@@ -42,8 +44,6 @@ public class Level15_14 {
 				}
 			}
 		}
-        
-		// Top-Down 때와는 다르게 dp 인덱스가 한 줄씩 추가되었으므로 -1을 하지 않음
 		System.out.println(dp[length_1][length_2]);
 		
 	}
