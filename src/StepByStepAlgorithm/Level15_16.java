@@ -21,13 +21,12 @@ public class Level15_16 {
 		
 		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 		
-		
 		int N = Integer.parseInt(st.nextToken());
 		int K = Integer.parseInt(st.nextToken());
  
 		int[] W = new int[N + 1]; // 무게
 		int[] V = new int[N + 1]; // 가치
-		int[][] dp = new int[N + 1][K + 1];
+		int[] dp = new int[K + 1];
  
 		for (int i = 1; i <= N; i++) {
 			st = new StringTokenizer(br.readLine(), " ");
@@ -36,19 +35,12 @@ public class Level15_16 {
 		}
  
 		for (int i = 1; i <= N; i++) {
-			for (int j = 1; j <= K; j++) {
-				
-				// i번째 무게를 더 담을 수 없는 경우 
-				if(W[i] > j) {
-					dp[i][j] = dp[i - 1][j];
-				}
-				// i번째 무게를 더 담을 수 있는 경우 
-				else {
-					dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - W[i]] + V[i]);
-				}
-				
+			
+			// K부터 탐색하여 담을 수 있는 무게 한계치가 넘지 않을 때까지 반복 
+			for (int j = K; j - W[i] >= 0; j--) {
+				dp[j] = Math.max(dp[j], dp[j - W[i]] + V[i]);
 			}
 		}
-		System.out.println(dp[N][K]);
+		System.out.println(dp[K]);
 	}
 }
