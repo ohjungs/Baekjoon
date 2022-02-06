@@ -1,8 +1,11 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Level16_2 {
 	/*
@@ -15,12 +18,11 @@ public class Level16_2 {
 	 * 출력 첫째 줄에 최대 사용할 수 있는 회의의 최대 개수를 출력한다.
 	 */
 
-	public static void main(String[] args) {
- 
-		Scanner in = new Scanner(System.in);
+	public static void main(String[] args) throws IOException {
+		 
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
-		int N = in.nextInt();
-		
+		int N = Integer.parseInt(br.readLine());
 		
 		/*
 		  time[][0] 은 시작시점을 의미 
@@ -28,10 +30,12 @@ public class Level16_2 {
 		*/
 		int[][] time = new int[N][2];
 		
+		StringTokenizer st;
 		
 		for(int i = 0; i < N; i++) {
-			time[i][0] = in.nextInt();	// 시작시간 
-			time[i][1] = in.nextInt();	// 종료시간 
+			st = new StringTokenizer(br.readLine(), " ");
+			time[i][0] = Integer.parseInt(st.nextToken());	// 시작시간 
+			time[i][1] = Integer.parseInt(st.nextToken());	// 종료시간 
 		}
 		
 		
