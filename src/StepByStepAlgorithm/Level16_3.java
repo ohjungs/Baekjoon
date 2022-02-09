@@ -23,29 +23,33 @@ public class Level16_3 {
 	 * 출력 첫째 줄에 각 사람이 돈을 인출하는데 필요한 시간의 합의 최솟값을 출력한다.
 	 */
 	public static void main(String[] args) {
+	
 		Scanner in = new Scanner(System.in);
-		
+ 
 		int N = in.nextInt();
-		
-		int[] arr = new int[N];
-		
-		for(int i = 0; i < N; i++) {
-			arr[i] = in.nextInt();
+ 
+ 
+		// 입력의 범위는 1 ~ 1000이므로 1001개의 index를 둔다.
+		int[] arr = new int[1001];
+ 
+		// Counting Sort 
+		while (N-- > 0) {
+			arr[in.nextInt()]++;
 		}
+ 
+		int prev = 0;	// 이전까지의 대기시간 누적합
+		int sum = 0;	// 사람별 대기시간 총합
 		
-		// 정렬 
-		Arrays.sort(arr);
- 
- 
-		int prev = 0;	// 이전까지의 대기시간 누적합 
-		int sum = 0;	// 사람별 대기시간 총합 
+		for (int i = 0; i < 1001; i++) {
+			
+			// 해당 i index가 0이 될 때 까지 반복 
+			while (arr[i]-- > 0) {
+				// 이전까지의 대기시간과 현재 사람이 걸리는 시간을 더해준다.
+				sum += (i + prev);
 				
-		for(int i = 0; i < N; i++) {	
-			// 이전까지의 대기시간과 현재 사람이 걸리는 시간을 더해준다.
-			sum += prev + arr[i];
-		    
-			// 이전까지의 누적합에 현재 걸리는 시간을 더해준다.
-			prev += arr[i];
+				// 이전까지의 누적합에 현재 걸리는 시간을 더해준다.
+				prev += i;
+			}
 		}
 		System.out.println(sum);
 	}
