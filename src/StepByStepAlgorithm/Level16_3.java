@@ -1,5 +1,8 @@
 package StepByStepAlgorithm;
 
+import java.util.Arrays;
+import java.util.Scanner;
+
 public class Level16_3 {
 	/*
 	 * 11399번 atm 문제 인하은행에는 ATM이 1대밖에 없다. 지금 이 ATM앞에 N명의 사람들이 줄을 서있다. 사람은 1번부터 N번까지
@@ -19,4 +22,31 @@ public class Level16_3 {
 	 * (1 ≤ Pi ≤ 1,000)
 	 * 출력 첫째 줄에 각 사람이 돈을 인출하는데 필요한 시간의 합의 최솟값을 출력한다.
 	 */
+	public static void main(String[] args) {
+		Scanner in = new Scanner(System.in);
+		
+		int N = in.nextInt();
+		
+		int[] arr = new int[N];
+		
+		for(int i = 0; i < N; i++) {
+			arr[i] = in.nextInt();
+		}
+		
+		// 정렬 
+		Arrays.sort(arr);
+ 
+ 
+		int prev = 0;	// 이전까지의 대기시간 누적합 
+		int sum = 0;	// 사람별 대기시간 총합 
+				
+		for(int i = 0; i < N; i++) {	
+			// 이전까지의 대기시간과 현재 사람이 걸리는 시간을 더해준다.
+			sum += prev + arr[i];
+		    
+			// 이전까지의 누적합에 현재 걸리는 시간을 더해준다.
+			prev += arr[i];
+		}
+		System.out.println(sum);
+	}
 }
