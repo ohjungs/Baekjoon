@@ -20,11 +20,11 @@ public class Level10_2 {
 	 * 출력 첫째 줄에 n번째 피보나치 수를 출력한다.
 	 */
 	public static void main(String[] args) {
-		Scanner in = new Scanner(System.in);
-		 
-		int N = in.nextInt();
+		try (Scanner in = new Scanner(System.in)) {
+			int N = in.nextInt();
  
-		System.out.println(fibonacci(N));
+			System.out.println(fibonacci(N));
+		}
  
 	}
  

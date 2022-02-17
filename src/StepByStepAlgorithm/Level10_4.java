@@ -22,13 +22,14 @@ public class Level10_4 {
 	public static StringBuilder sb = new StringBuilder();
 	 
 	public static void main(String[] args) {
-		Scanner in = new Scanner(System.in);
+		try (Scanner in = new Scanner(System.in)) {
+			int N = in.nextInt();
  
-		int N = in.nextInt();
+			sb.append((int) (Math.pow(2, N) - 1)).append('\n');
  
-		sb.append((int) (Math.pow(2, N) - 1)).append('\n');
+			Hanoi(N, 1, 2, 3);
+		}
  
-		Hanoi(N, 1, 2, 3);
 		System.out.println(sb);
 	}
 	public static void Hanoi(int N, int start, int mid, int to) {
