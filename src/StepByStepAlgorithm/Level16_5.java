@@ -1,6 +1,10 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Level16_5 {
     // 13305번 주유소 문제
@@ -26,42 +30,44 @@ public class Level16_5 {
     // 자연수이다. 리터당 가격은 1 이상 1,000,000,000 이하의 자연수이다.
     // 출력
     // 표준 출력으로 제일 왼쪽 도시에서 제일 오른쪽 도시로 가는 최소 비용을 출력한다.
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NumberFormatException, IOException {
 
-        try (Scanner in = new Scanner(System.in)) {
-            int N = in.nextInt();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-            long[] dist = new long[N - 1]; // 거리
-            long[] cost = new long[N]; // 비용
+        int N = Integer.parseInt(br.readLine());
 
-            // 거리 입력
-            for (int i = 0; i < N - 1; i++) {
-                dist[i] = in.nextLong();
-            }
+        long[] dist = new long[N - 1]; // 거리
+        long[] cost = new long[N]; // 비용
 
-            // 리터당 기름값 입력
-            for (int i = 0; i < N; i++) {
-                cost[i] = in.nextLong();
-            }
-
-            long sum = 0;
-            long minCost = cost[0]; // 이전 까지의 과정 중 주유 최소 비용
-
-            for (int i = 0; i < N - 1; i++) {
-
-                /*
-                 * 현재 주유소가 이전 주유소의 기름값보다 쌀 경우
-                 * minCost를 갱신해준다.
-                 */
-                if (cost[i] < minCost) {
-                    minCost = cost[i];
-                }
-
-                sum += (minCost * dist[i]); // 총 비용 누적 합
-            }
-
-            System.out.println(sum);
+        // 거리 입력
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        for (int i = 0; i < N - 1; i++) {
+            dist[i] = Long.parseLong(st.nextToken());
         }
+
+        // 리터당 기름값 입력
+        st = new StringTokenizer(br.readLine(), " ");
+        for (int i = 0; i < N; i++) {
+            cost[i] = Long.parseLong(st.nextToken());
+        }
+
+        long sum = 0;
+        long minCost = cost[0]; // 이전 까지의 과정 중 주유 최소 비용
+
+        for (int i = 0; i < N - 1; i++) {
+
+            /*
+             * 현재 주유소가 이전 주유소의 기름값보다 쌀 경우
+             * minCost를 갱신해준다.
+             */
+            if (cost[i] < minCost) {
+                minCost = cost[i];
+            }
+
+            sum += (minCost * dist[i]);
+        }
+
+        System.out.println(sum);
 
     }
 }
