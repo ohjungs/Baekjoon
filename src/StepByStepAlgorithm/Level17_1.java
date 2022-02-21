@@ -1,5 +1,7 @@
 package StepByStepAlgorithm;
 
+import java.util.Scanner;
+
 public class Level17_1 {
     // 5086 배수와 약수 문제
     // 4 × 3 = 12이다.
@@ -22,4 +24,27 @@ public class Level17_1 {
     // 출력
     // 각 테스트 케이스마다 첫 번째 숫자가 두 번째 숫자의 약수라면 factor를, 배수라면 multiple을, 둘 다 아니라면 neither를
     // 출력한다.
+
+    public static void main(String[] args) {
+
+        Scanner in = new Scanner(System.in);
+
+        while (true) {
+
+            int first = in.nextInt();
+            int second = in.nextInt();
+
+            if (first == 0 && second == 0)
+                break;
+
+            if (second % first == 0) {
+                System.out.println("factor");
+            } else if (first % second == 0) {
+                System.out.println("multiple");
+            } else {
+                System.out.println("neither");
+            }
+        }
+
+    }
 }
