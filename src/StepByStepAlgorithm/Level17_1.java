@@ -27,7 +27,13 @@ public class Level17_1 {
 
     public static void main(String[] args) {
 
+        String f = "factor\n";
+        String m = "multiple\n";
+        String n = "neither\n";
+
         Scanner in = new Scanner(System.in);
+
+        StringBuilder sb = new StringBuilder();
 
         while (true) {
 
@@ -38,13 +44,13 @@ public class Level17_1 {
                 break;
 
             if (second % first == 0) {
-                System.out.println("factor");
+                sb.append(f);
             } else if (first % second == 0) {
-                System.out.println("multiple");
+                sb.append(m);
             } else {
-                System.out.println("neither");
+                sb.append(n);
             }
         }
-
+        System.out.println(sb);
     }
 }
