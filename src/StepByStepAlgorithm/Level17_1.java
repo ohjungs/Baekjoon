@@ -1,6 +1,10 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Level17_1 {
     // 5086 배수와 약수 문제
@@ -25,20 +29,22 @@ public class Level17_1 {
     // 각 테스트 케이스마다 첫 번째 숫자가 두 번째 숫자의 약수라면 factor를, 배수라면 multiple을, 둘 다 아니라면 neither를
     // 출력한다.
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         String f = "factor\n";
         String m = "multiple\n";
         String n = "neither\n";
 
-        Scanner in = new Scanner(System.in);
-
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
+        StringTokenizer st;
 
         while (true) {
 
-            int first = in.nextInt();
-            int second = in.nextInt();
+            st = new StringTokenizer(br.readLine(), " ");
+
+            int first = Integer.parseInt(st.nextToken());
+            int second = Integer.parseInt(st.nextToken());
 
             if (first == 0 && second == 0)
                 break;
@@ -50,6 +56,7 @@ public class Level17_1 {
             } else {
                 sb.append(n);
             }
+
         }
         System.out.println(sb);
     }
