@@ -1,6 +1,10 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Level17_2 {
     // 1037번 약수
@@ -15,25 +19,21 @@ public class Level17_2 {
     // 출력
     // 첫째 줄에 N을 출력한다. N은 항상 32비트 부호있는 정수로 표현할 수 있다.
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        Scanner in = new Scanner(System.in);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int T = in.nextInt();
+        int T = Integer.parseInt(br.readLine());
 
         int max = Integer.MIN_VALUE;
         int min = Integer.MAX_VALUE;
 
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+
         while (T-- > 0) {
-            int N = in.nextInt();
+            int N = Integer.parseInt(st.nextToken());
             max = N > max ? N : max;
             min = N < min ? N : min;
-
-            /*
-             * same this
-             * if(N > max) max = N;
-             * if(N < min) min = N;
-             */
         }
         System.out.println(max * min);
     }
