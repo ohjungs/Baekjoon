@@ -24,14 +24,20 @@ public class Level17_3 {
         System.out.println(d);
         System.out.println(a * b / d);
 
+        in.close();
     }
 
-    // 최대공약수 재귀 방식
+    // 최대공약수 반복문 방식
     public static int gcd(int a, int b) {
-        if (b == 0)
-            return a;
 
-        // GCD(a, b) = GCD(b, r)이므로 (r = a % b)
-        return gcd(b, a % b);
+        while (b != 0) {
+            int r = a % b; // 나머지를 구해준다.
+
+            // GCD(a, b) = GCD(b, r)이므로 변환한다.
+            a = b;
+            b = r;
+        }
+        return a;
+
     }
 }
