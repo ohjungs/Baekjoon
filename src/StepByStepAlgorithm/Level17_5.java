@@ -1,5 +1,8 @@
 package StepByStepAlgorithm;
 
+import java.util.Arrays;
+import java.util.Scanner;
+
 public class Level17_5 {
     // 2981 검문 문제
     // 트럭을 타고 이동하던 상근이는 경찰의 검문을 받게 되었다. 경찰은 상근이가 운반하던 화물을 하나하나 모두 확인할 것이기 때문에, 검문하는데
@@ -22,4 +25,46 @@ public class Level17_5 {
 
     // 출력
     // 첫째 줄에 가능한 M을 공백으로 구분하여 모두 출력한다. 이때, M은 증가하는 순서이어야 한다.
+    public static void main(String[] args) {
+
+        Scanner in = new Scanner(System.in);
+
+        int N = in.nextInt();
+
+        int[] arr = new int[N];
+
+        for (int i = 0; i < N; i++) {
+            arr[i] = in.nextInt();
+        }
+
+        Arrays.sort(arr); // 정렬
+
+        int gcdVal = arr[1] - arr[0]; // 음수가 되지 않도록 큰 수에서 작은 수로 빼준다.
+
+        for (int i = 2; i < N; i++) {
+            // 직전의 최대 공약수와 다음 수(arr[i] - arr[i - 1])의 최대공약수를 갱신
+            gcdVal = gcd(gcdVal, arr[i] - arr[i - 1]);
+        }
+
+        // 최대공약수의 약수들 찾기
+        for (int i = 2; i <= gcdVal; i++) {
+
+            // i가 최대공약수의 약수라면 출력
+            if (gcdVal % i == 0) {
+                System.out.print(i + " ");
+            }
+        }
+
+    }
+
+    // 최대공약수 함수
+    static int gcd(int a, int b) {
+        while (b != 0) {
+            int r = a % b;
+            a = b;
+            b = r;
+        }
+        return a;
+    }
+
 }
