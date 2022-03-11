@@ -1,5 +1,8 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -25,16 +28,16 @@ public class Level17_5 {
 
     // 출력
     // 첫째 줄에 가능한 M을 공백으로 구분하여 모두 출력한다. 이때, M은 증가하는 순서이어야 한다.
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        Scanner in = new Scanner(System.in);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int N = in.nextInt();
+        int N = Integer.parseInt(br.readLine());
 
         int[] arr = new int[N];
 
         for (int i = 0; i < N; i++) {
-            arr[i] = in.nextInt();
+            arr[i] = Integer.parseInt(br.readLine());
         }
 
         Arrays.sort(arr); // 정렬
@@ -66,5 +69,4 @@ public class Level17_5 {
         }
         return a;
     }
-
 }
