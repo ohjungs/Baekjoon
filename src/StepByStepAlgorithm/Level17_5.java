@@ -49,14 +49,21 @@ public class Level17_5 {
             gcdVal = gcd(gcdVal, arr[i] - arr[i - 1]);
         }
 
-        // 최대공약수의 약수들 찾기
-        for (int i = 2; i <= gcdVal; i++) {
+        StringBuilder sb = new StringBuilder();
 
-            // i가 최대공약수의 약수라면 출력
+        // 최대공약수의 약수들 찾기 (절반까지만 탐색)
+        for (int i = 2; i <= gcdVal / 2; i++) {
+
+            // i의 제곱 값이 최대공약수의 약수라면?
             if (gcdVal % i == 0) {
-                System.out.print(i + " ");
+                sb.append(i + " ");
             }
         }
+
+        // 마지막 최대공약수 꼭 출력해야함
+        sb.append(gcdVal);
+
+        System.out.println(sb);
 
     }
 
@@ -69,4 +76,5 @@ public class Level17_5 {
         }
         return a;
     }
+
 }
