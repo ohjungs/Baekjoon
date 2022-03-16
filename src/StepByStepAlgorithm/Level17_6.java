@@ -1,6 +1,10 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Level17_6 {
     // 3036번 문제
@@ -19,25 +23,31 @@ public class Level17_6 {
     // 출력
     // 출력은 총 N-1줄을 해야 한다. 첫 번째 링을 제외한 각각의 링에 대해서, 첫 번째 링을 한 바퀴 돌리면 그 링은 몇 바퀴 도는지 기약
     // 분수 형태 A/B로 출력한다
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        Scanner in = new Scanner(System.in);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
 
-        int N = in.nextInt();
+        int N = Integer.parseInt(br.readLine());
+
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
         // 첫 번째 링
-        int firstRing = in.nextInt();
+        int firstRing = Integer.parseInt(st.nextToken());
 
         for (int i = 1; i < N; i++) {
 
-            int otherRing = in.nextInt();
+            int otherRing = Integer.parseInt(st.nextToken());
 
             // 기약분수로 만들기 위한 최대공약수 찾기
             int gcd = gcd(firstRing, otherRing);
 
             // 분모와 분자를 최대공약수로 나눠주기
-            System.out.println((firstRing / gcd) + "/" + (otherRing / gcd));
+            sb.append(firstRing / gcd).append('/').append(otherRing / gcd).append('\n');
         }
+
+        System.out.println(sb);
+
     }
 
     // 최대공약수 메소드
