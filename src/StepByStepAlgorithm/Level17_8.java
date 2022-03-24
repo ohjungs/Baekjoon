@@ -17,6 +17,7 @@ public class Level17_8 {
 
     // \(\binom{N}{K}\)를 10,007로 나눈 나머지를 출력한다.
 
+    static int[][] dp;
     public static final int div = 10007;
 
     public static void main(String[] args) throws IOException {
@@ -28,35 +29,23 @@ public class Level17_8 {
         int N = Integer.parseInt(st.nextToken());
         int K = Integer.parseInt(st.nextToken());
 
-        /*
-         * n! / ((n-k)! * k!) -> n! * ((n-k)! * k!)^(-1) 으로 변환
-         * ((n-k)! * k!)^(-1) == ((n-k)! * k!)^(p-2) 동치
-         * p(=div)가 소수여서 가능함)
-         */
-        System.out.println((factorial(N) * mod_inverse((factorial(N - K) * factorial(K)) % div, div - 2)) % div);
+        dp = new int[N + 1][K + 1];
+
+        System.out.println(BC(N, K));
+
     }
 
-    static int factorial(int N) {
-        // factorial(0) == 1 이다.
-        if (N <= 1) {
-            return 1;
-        }
-        return (N * factorial(N - 1)) % div;
-    }
+    static int BC(int n, int k) {
 
-    // 역원 구하기 (= 제곱승 구하기)
-    static int mod_inverse(int a, int p) {
-        int ret = 1;
-        while (p > 0) {
-            if (p % 2 == 1) {
-                ret *= a;
-                p--;
-                ret %= div;
-            }
-            a *= a;
-            a %= div;
-            p >>= 1; // p = p/2 랑 동치
+        // 이미 풀었던 sub문제일 경우 값을 재활용
+        if (dp[n][k] > 0) {
+            return dp[n][k];
         }
-        return ret;
+
+        if (k == 0 || n == k) {
+            return dp[n][k] = 1;
+        }
+
+        return dp[n][k] = (BC(n - 1, k - 1) + BC(n - 1, k)) % div;
     }
 }
