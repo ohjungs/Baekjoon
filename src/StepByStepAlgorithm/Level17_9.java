@@ -1,5 +1,7 @@
 package StepByStepAlgorithm;
 
+import java.util.Scanner;
+
 public class Level17_9 {
     // 1010번 문제
     // 재원이는 한 도시의 시장이 되었다. 이 도시에는 도시를 동쪽과 서쪽으로 나누는 큰 일직선 모양의 강이 흐르고 있다. 하지만 재원이는 다리가
@@ -17,4 +19,42 @@ public class Level17_9 {
 
     // 출력
     // 각 테스트 케이스에 대해 주어진 조건하에 다리를 지을 수 있는 경우의 수를 출력한다.
+    static int[][] dp = new int[30][30];
+
+    public static void main(String[] args) {
+
+        Scanner in = new Scanner(System.in);
+
+        int T = in.nextInt();
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < T; i++) {
+
+            // M개중 N개를 뽑는 경우이므로 nCr 에서 n = M, r = N이다.
+            int N = in.nextInt(); // N = r
+            int M = in.nextInt(); // M = n
+
+            sb.append(combi(M, N)).append('\n');
+        }
+
+        System.out.println(sb);
+
+    }
+
+    static int combi(int n, int r) {
+
+        // 이미 풀린 경우 바로 반환
+        if (dp[n][r] > 0) {
+            return dp[n][r];
+        }
+
+        // 2번 성질
+        if (n == r || r == 0) {
+            return dp[n][r] = 1;
+        }
+
+        // 1번 성질
+        return dp[n][r] = combi(n - 1, r - 1) + combi(n - 1, r);
+    }
 }
