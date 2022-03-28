@@ -1,6 +1,10 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Level17_9 {
     // 1010번 문제
@@ -19,39 +23,45 @@ public class Level17_9 {
 
     // 출력
     // 각 테스트 케이스에 대해 주어진 조건하에 다리를 지을 수 있는 경우의 수를 출력한다.
-    public static void main(String[] args) {
+    static int[][] dp = new int[30][30];
 
-        Scanner in = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
 
-        int[][] dp = new int[30][30];
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        // 2번 성질 (n == r, r == 0)
-        for (int i = 0; i < 30; i++) {
-            dp[i][i] = 1;
-            dp[i][0] = 1;
-        }
+        int T = Integer.parseInt(br.readLine());
 
-        for (int i = 2; i < 30; i++) {
-            for (int j = 1; j < 30; j++) {
-                // 1번 성질
-                dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
-            }
-        }
-
-        int T = in.nextInt();
+        StringTokenizer st;
 
         StringBuilder sb = new StringBuilder();
-
         for (int i = 0; i < T; i++) {
 
-            // M개중 N개를 뽑는 경우이므로 nCr 에서 n = M, r = N이다.
-            int N = in.nextInt(); // N = r
-            int M = in.nextInt(); // M = n
+            st = new StringTokenizer(br.readLine(), " ");
 
-            sb.append(dp[M][N]).append('\n');
+            // M개중 N개를 뽑는 경우이므로 nCr 에서 n = M, r = N이다.
+            int N = Integer.parseInt(st.nextToken()); // N = r
+            int M = Integer.parseInt(st.nextToken()); // M = n
+
+            sb.append(combi(M, N)).append('\n');
         }
 
         System.out.println(sb);
 
+    }
+
+    static int combi(int n, int r) {
+
+        // 이미 풀린 경우 바로 반환
+        if (dp[n][r] > 0) {
+            return dp[n][r];
+        }
+
+        // 2번 성질
+        if (n == r || r == 0) {
+            return dp[n][r] = 1;
+        }
+
+        // 1번 성질
+        return dp[n][r] = combi(n - 1, r - 1) + combi(n - 1, r);
     }
 }
