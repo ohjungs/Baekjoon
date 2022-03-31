@@ -1,6 +1,10 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Level17__1 {
     // 스택 10828 문제
@@ -22,23 +26,24 @@ public class Level17__1 {
     public static int[] stack;
     public static int size = 0;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        Scanner in = new Scanner(System.in);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
 
-        int N = in.nextInt();
+        StringTokenizer st;
+
+        int N = Integer.parseInt(br.readLine());
 
         stack = new int[N];
 
-        for (int i = 0; i < N; i++) {
+        while (N-- > 0) {
+            st = new StringTokenizer(br.readLine(), " ");
 
-            String str = in.next();
-
-            switch (str) {
+            switch (st.nextToken()) {
 
                 case "push":
-                    push(in.nextInt());
+                    push(Integer.parseInt(st.nextToken()));
                     break;
 
                 case "pop":
@@ -97,4 +102,5 @@ public class Level17__1 {
             return stack[size - 1];
         }
     }
+
 }
