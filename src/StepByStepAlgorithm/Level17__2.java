@@ -1,5 +1,8 @@
 package StepByStepAlgorithm;
 
+import java.util.Scanner;
+import java.util.Stack;
+
 public class Level17__2 {
     // 10773 문제
     // 나코더 기장 재민이는 동아리 회식을 준비하기 위해서 장부를 관리하는 중이다.
@@ -20,4 +23,34 @@ public class Level17__2 {
 
     // 출력
     // 재민이가 최종적으로 적어 낸 수의 합을 출력한다. 최종적으로 적어낸 수의 합은 231-1보다 작거나 같은 정수이다.
+
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+
+        Stack<Integer> stack = new Stack<Integer>();
+
+        int K = in.nextInt();
+
+        for (int i = 0; i < K; i++) {
+            int number = in.nextInt();
+
+            if (number == 0) { // 0이라면 스택에 저장된 top 원소를 지운다.
+                stack.pop();
+            } else {
+                /*
+                 * push() 대신 add()로 대체해도 됨 (똑같이 상단에 원소를 추가하는 메소드다.)
+                 * ex) stack.add(number);
+                 */
+                stack.push(number);
+            }
+        }
+        int sum = 0;
+
+        for (int o : stack) {
+            sum += o;
+        }
+
+        System.out.println(sum);
+    }
+
 }
