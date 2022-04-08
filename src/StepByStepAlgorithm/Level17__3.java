@@ -1,5 +1,8 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -20,15 +23,18 @@ public class Level17__3 {
     // 출력
     // 출력은 표준 출력을 사용한다. 만일 입력 괄호 문자열이 올바른 괄호 문자열(VPS)이면 “YES”, 아니면 “NO”를 한 줄에 하나씩
     // 차례대로 출력해야 한다.
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        Scanner in = new Scanner(System.in);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
 
-        int T = in.nextInt();
+        int T = Integer.parseInt(br.readLine());
 
         for (int i = 0; i < T; i++) {
-            System.out.println(solve(in.next())); // nextLine()쓰면 안된다.
+            sb.append(solve(br.readLine())).append('\n');
         }
+
+        System.out.println(sb);
     }
 
     public static String solve(String s) {
