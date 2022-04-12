@@ -1,5 +1,8 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -25,19 +28,24 @@ public class Level17__4 {
     // 입력의 종료조건으로 맨 마지막에 점 하나(".")가 들어온다.
     // 출력
     // 각 줄마다 해당 문자열이 균형을 이루고 있으면 "yes"를, 아니면 "no"를 출력한다.
-    public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
 
         String s;
 
         while (true) {
-            s = in.nextLine();
+
+            s = br.readLine();
 
             if (s.equals(".")) { // 종료 조건문
                 break;
             }
-            System.out.println(solve(s));
+
+            sb.append(solve(s)).append('\n');
         }
+
+        System.out.println(sb);
 
     }
 
