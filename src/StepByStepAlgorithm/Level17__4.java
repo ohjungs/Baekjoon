@@ -1,5 +1,8 @@
 package StepByStepAlgorithm;
 
+import java.util.Scanner;
+import java.util.Stack;
+
 public class Level17__4 {
     // 4949 문제
     // 세계는 균형이 잘 잡혀있어야 한다. 양과 음, 빛과 어둠 그리고 왼쪽 괄호와 오른쪽 괄호처럼 말이다.
@@ -22,4 +25,63 @@ public class Level17__4 {
     // 입력의 종료조건으로 맨 마지막에 점 하나(".")가 들어온다.
     // 출력
     // 각 줄마다 해당 문자열이 균형을 이루고 있으면 "yes"를, 아니면 "no"를 출력한다.
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+
+        String s;
+
+        while (true) {
+            s = in.nextLine();
+
+            if (s.equals(".")) { // 종료 조건문
+                break;
+            }
+            System.out.println(solve(s));
+        }
+
+    }
+
+    public static String solve(String s) {
+
+        Stack<Character> stack = new Stack<>();
+
+        for (int i = 0; i < s.length(); i++) {
+
+            char c = s.charAt(i); // i 번째 문자
+
+            // 여는 괄호일 경우 스택에 push
+            if (c == '(' || c == '[') {
+                stack.push(c);
+            }
+
+            // 닫는 소괄호 일 경우
+            else if (c == ')') {
+
+                // 스택이 비어있거나 pop할 원소가 소괄호랑 매칭이 안되는 경우
+                if (stack.empty() || stack.peek() != '(') {
+                    return "no";
+                } else {
+                    stack.pop();
+                }
+            }
+
+            else if (c == ']') {
+
+                // 스택이 비어있거나 pop할 원소가 대괄호랑 매칭이 안되는 경우
+                if (stack.empty() || stack.peek() != '[') {
+                    return "no";
+                } else {
+                    stack.pop();
+                }
+            }
+
+            // 그 외의 경우에는 불필요한 문자들이기에 skip한다.
+        }
+
+        if (stack.empty()) {
+            return "yes";
+        } else {
+            return "no";
+        }
+    }
 }
