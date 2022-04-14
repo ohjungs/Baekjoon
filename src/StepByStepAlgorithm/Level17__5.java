@@ -1,5 +1,8 @@
 package StepByStepAlgorithm;
 
+import java.util.Scanner;
+import java.util.Stack;
+
 public class Level17__5 {
     // 1874 문제
     // 스택 (stack)은 기본적인 자료구조 중 하나로, 컴퓨터 프로그램을 작성할 때 자주 이용되는 개념이다. 스택은 자료를 넣는 (push)
@@ -17,4 +20,42 @@ public class Level17__5 {
     // 출력
     // 입력된 수열을 만들기 위해 필요한 연산을 한 줄에 한 개씩 출력한다. push연산은 +로, pop 연산은 -로 표현하도록 한다. 불가능한
     // 경우 NO를 출력한다.
+    public static void main(String[] args) {
+
+        Scanner in = new Scanner(System.in);
+        StringBuilder sb = new StringBuilder(); // 출력할 결과물 저장
+
+        Stack<Integer> stack = new Stack<>();
+
+        int N = in.nextInt();
+
+        int start = 0;
+
+        // N 번 반복
+        while (N-- > 0) {
+
+            int value = in.nextInt();
+
+            if (value > start) {
+                // start + 1부터 입력받은 value 까지 push를 한다.
+                for (int i = start + 1; i <= value; i++) {
+                    stack.push(i);
+                    sb.append('+').append('\n'); // + 를 저장한다.
+                }
+                start = value; // 다음 push 할 때의 오름차순을 유지하기 위한 변수 초기화
+            }
+
+            // top에 있는 원소가 입력받은 값과 같이 않은 경우
+            else if (stack.peek() != value) {
+                System.out.println("NO");
+                return; // 또는 System.exit(0); 으로 대체해도 됨.
+            }
+
+            stack.pop();
+            sb.append('-').append('\n');
+
+        }
+
+        System.out.println(sb);
+    }
 }
