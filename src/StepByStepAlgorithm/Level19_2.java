@@ -1,5 +1,9 @@
 package StepByStepAlgorithm;
 
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
 public class Level19_2 {
     // 2164 문제
     // N장의 카드가 있다. 각각의 카드는 차례로 1부터 N까지의 번호가 붙어 있으며, 1번 카드가 제일 위에, N번 카드가 제일 아래인 상태로
@@ -19,4 +23,26 @@ public class Level19_2 {
 
     // 출력
     // 첫째 줄에 남게 되는 카드의 번호를 출력한다.
+    public class Main {
+
+        Scanner in = new Scanner(System.in);
+
+        Queue<Integer> q = new LinkedList<>();
+
+        int N = in.nextInt();
+
+        for(
+        int i = 1;i<=N;i++)
+        {
+            q.offer(i);
+        }
+
+        while(q.size()>1)
+        {
+            q.poll(); // 맨 앞의 원소 버림
+            q.offer(q.poll()); // 맨 앞의 원소를 버림과 동시에 버려진 원소를 맨 뒤에 삽입
+        }
+
+        System.out.println(q.poll()); // 마지막으로 남은 원소 출력
+    }
 }
