@@ -1,7 +1,11 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Level19_4 {
     // 1966 문제
@@ -27,26 +31,29 @@ public class Level19_4 {
 
     // 출력
     // 각 테스트 케이스에 대해 문서가 몇 번째로 인쇄되는지 출력한다.
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        Scanner in = new Scanner(System.in);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
 
-        int T = in.nextInt(); // 테스트 케이스
+        int T = Integer.parseInt(br.readLine()); // 테스트 케이스
 
         while (T-- > 0) {
 
-            int N = in.nextInt();
-            int M = in.nextInt();
+            StringTokenizer st = new StringTokenizer(br.readLine());
+
+            int N = Integer.parseInt(st.nextToken());
+            int M = Integer.parseInt(st.nextToken());
 
             LinkedList<int[]> q = new LinkedList<>(); // Queue로 활용 할 연결리스트
+            st = new StringTokenizer(br.readLine());
 
             for (int i = 0; i < N; i++) {
                 // {초기 위치, 중요도}
-                q.offer(new int[] { i, in.nextInt() });
+                q.offer(new int[] { i, Integer.parseInt(st.nextToken()) });
             }
 
-            int count = 0;
+            int count = 0; // 출력 횟수
 
             while (!q.isEmpty()) { // 한 케이스에 대한 반복문
 
