@@ -107,13 +107,17 @@ public class Level19_5 {
     static void push_front(int val) {
         // 원소를 먼저 넣은 뒤 front을 감소시킨다.
         deque[front] = val;
-        front--;
+        // 음수가 되지 않도록 배열 크기만큼 더해준다.
+        front = (front - 1 + 10000) % 10000;
         size++;
     }
 
     static void push_back(int val) {
-
-        back++;
+        /*
+         * deque[9999] 까지 꽉 찼을 경우 0으로 가리키기 위해
+         * 배열 크기만큼 나눠 나머지를 구한다.
+         */
+        back = (back + 1) % 10000;
         size++;
         deque[back] = val;
     }
@@ -126,8 +130,8 @@ public class Level19_5 {
          * front + 1이 front 원소이므로 해당 원소를 임시 변수에 둔 뒤
          * front 을 +1 증가시킨다.
          */
-        int ret = deque[front + 1];
-        front++;
+        int ret = deque[(front + 1) % 10000];
+        front = (front + 1) % 10000;
         size--;
         return ret;
     }
@@ -137,7 +141,7 @@ public class Level19_5 {
             return -1;
         }
         int ret = deque[back];
-        back--;
+        back = (back - 1 + 10000) % 10000;
         size--;
         return ret;
     }
@@ -157,7 +161,7 @@ public class Level19_5 {
         if (size == 0) {
             return -1;
         }
-        return deque[front + 1];
+        return deque[(front + 1) % 10000];
     }
 
     static int back() {
@@ -166,5 +170,4 @@ public class Level19_5 {
         }
         return deque[back];
     }
-
 }
