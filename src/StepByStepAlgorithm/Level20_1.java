@@ -1,5 +1,7 @@
 package StepByStepAlgorithm;
 
+import java.util.Scanner;
+
 public class Level20_1 {
 
     // 2630번 색종이 만들기 문제
@@ -24,4 +26,67 @@ l
     // 첫째 줄에는 전체 종이의 한 변의 길이 N이 주어져 있다. N은 2, 4, 8, 16, 32, 64, 128 중 하나이다. 색종이의 각
     // 가로줄의 정사각형칸들의 색이 윗줄부터 차례로 둘째 줄부터 마지막 줄까지 주어진다. 하얀색으로 칠해진 칸은 0, 파란색으로 칠해진 칸은 1로
     // 주어지며, 각 숫자 사이에는 빈칸이 하나씩 있다.
+    public static int white = 0;
+	public static int blue = 0;
+	public static int[][] board;
+ 
+	public static void main(String[] args) {
+		
+		Scanner in = new Scanner(System.in);
+		
+		int N = in.nextInt();
+		
+		board = new int[N][N];
+		
+		for(int i = 0; i < N; i++) {
+			for(int j = 0; j < N; j++) {
+				board[i][j] = in.nextInt();
+			}
+		}
+		
+		partition(0, 0, N);
+		
+		System.out.println(white);
+		System.out.println(blue);
+		
+	}
+	
+	public static void partition(int row, int col, int size) {
+		
+		//
+		if(colorCheck(row, col, size)) {
+			if(board[row][col] == 0) {
+				white++;
+			}
+			else {
+				blue++;
+			}
+			return;
+		}
+		
+		int newSize = size / 2;	// 절반 사이즈
+		// 재귀 호출
+		partition(row, col, newSize);						// 2사분면
+		partition(row, col + newSize, newSize);				// 1사분면
+		partition(row + newSize, col, newSize);				// 3사분면
+		partition(row + newSize, col + newSize, newSize);	// 4사분면
+	}
+	
+	
+	// 현재 파티션의 컬러가 같은지 체크한다.
+	public static boolean colorCheck(int row, int col, int size) {
+	
+		int color = board[row][col];	// 첫 번째 원소를 기준으로 검사
+		
+		for(int i = row; i < row + size; i++) {
+			for(int j = col; j < col + size; j++) {
+				// 색상이 같이 않다면 false를 리턴 
+				if(board[i][j] != color) {
+					return false;
+				}
+			}
+		}
+		// 검사가 모두 통과했다는 의미이므로 true 리턴
+		return true;
+	}
 }
