@@ -1,5 +1,8 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 
 public class Level20_2 {
@@ -22,18 +25,18 @@ public class Level20_2 {
 
     // 출력
     // 영상을 압축한 결과를 출력한다.
-    public static int[][] img; // 흑백 이미지
+
+    public static int[][] img;
     public static StringBuilder sb = new StringBuilder();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        Scanner in = new Scanner(System.in);
-
-        int N = in.nextInt();
+        int N = Integer.parseInt(br.readLine());
         img = new int[N][N];
 
         for (int i = 0; i < N; i++) {
-            String str = in.next();
+            String str = br.readLine();
 
             for (int j = 0; j < N; j++) {
                 img[i][j] = str.charAt(j) - '0';
