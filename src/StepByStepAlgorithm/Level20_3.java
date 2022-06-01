@@ -1,6 +1,10 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Level20_3 {
     // 1780 종이의 개수 문제
@@ -18,20 +22,22 @@ public class Level20_3 {
     // 출력
     // 첫째 줄에 -1로만 채워진 종이의 개수를, 둘째 줄에 0으로만 채워진 종이의 개수를, 셋째 줄에 1로만 채워진 종이의 개수를 출력한다.
     public static int[][] board;
-    public static int GRAY = 0; // -1에 해당
-    public static int WHITE = 0; // 0에 해당
-    public static int BLACK = 0; // 1에 해당
+    public static int GRAY = 0; // -1
+    public static int WHITE = 0; // 0
+    public static int BLACK = 0; // 1
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        Scanner in = new Scanner(System.in);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int N = in.nextInt();
+        int N = Integer.parseInt(br.readLine());
         board = new int[N][N];
+        StringTokenizer st;
 
         for (int i = 0; i < N; i++) {
+            st = new StringTokenizer(br.readLine(), " ");
             for (int j = 0; j < N; j++) {
-                board[i][j] = in.nextInt();
+                board[i][j] = Integer.parseInt(st.nextToken());
             }
         }
 
