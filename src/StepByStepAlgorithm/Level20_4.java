@@ -14,7 +14,7 @@ public class Level20_4 {
     public static long C;
 
     public static void main(String[] args) {
-W
+
         Scanner in = new Scanner(System.in);
 
         long A = in.nextLong();
