@@ -1,6 +1,10 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Level20_4 {
     // 1629 문제
@@ -11,41 +15,77 @@ public class Level20_4 {
 
     // 출력
     // 첫째 줄에 A를 B번 곱한 수를 C로 나눈 나머지를 출력한다.
-    public static long C;
+    public static int[][] board;
+    public static int GRAY = 0; // -1
+    public static int WHITE = 0; // 0
+    public static int BLACK = 0; // 1
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        Scanner in = new Scanner(System.in);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        long A = in.nextLong();
-        long B = in.nextLong();
-        C = in.nextLong();
+        int N = Integer.parseInt(br.readLine());
+        board = new int[N][N];
+        StringTokenizer st;
 
-        System.out.println(pow(A, B));
+        for (int i = 0; i < N; i++) {
+            st = new StringTokenizer(br.readLine(), " ");
+            for (int j = 0; j < N; j++) {
+                board[i][j] = Integer.parseInt(st.nextToken());
+            }
+        }
+
+        partition(0, 0, N);
+
+        System.out.println(GRAY); // -1
+        System.out.println(WHITE); // 0
+        System.out.println(BLACK); // 1
+
     }
 
-    // A^exponent
-    public static long pow(long A, long exponent) {
+    public static void partition(int row, int col, int size) {
 
-        // 지수가 1일 경우 A^1 이므로 A를 그대로 리턴
-        if (exponent == 1) {
-            return A % C;
+        // 만약 같은 색상으로 이루어져있다면 해당 색상 카운트를 증가시킨다.
+        if (colorCheck(row, col, size)) {
+            if (board[row][col] == -1) {
+                GRAY++;
+            } else if (board[row][col] == 0) {
+                WHITE++;
+            } else {
+                BLACK++;
+            }
+
+            return;
         }
 
-        // 지수의 절반에 해당하는 A^(exponent / 2) 을 구한다.
-        long temp = pow(A, exponent / 2);
+        int newSize = size / 3;
 
-        /*
-         * 현재 지수가 홀 수 였다면
-         * A^(exponent / 2) * A^(exponent / 2) * A 이므로
-         * A를 한 번 더 곱해주어야 한다.
-         * 
-         * ex) A^9 = A^4 * A^4 * A
-         */
-        if (exponent % 2 == 1) {
-            return (temp * temp % C) * A % C;
+        partition(row, col, newSize); // 왼쪽 위
+        partition(row, col + newSize, newSize); // 중앙 위
+        partition(row, col + 2 * newSize, newSize); // 오른쪽 위
+
+        partition(row + newSize, col, newSize); // 왼쪽 중간
+        partition(row + newSize, col + newSize, newSize); // 중앙 중간
+        partition(row + newSize, col + 2 * newSize, newSize); // 오른쪽 중간
+
+        partition(row + 2 * newSize, col, newSize); // 왼쪽 아래
+        partition(row + 2 * newSize, col + newSize, newSize); // 중앙 아래
+        partition(row + 2 * newSize, col + 2 * newSize, newSize); // 오른쪽 아래
+
+    }
+
+    // 해당 영역이 같은 색인지 검사하는 메소드
+    public static boolean colorCheck(int row, int col, int size) {
+        int color = board[row][col];
+
+        // 각 블럭의 시작점(row, col)부터 블럭의 끝(row + size, col + size)까지 검사
+        for (int i = row; i < row + size; i++) {
+            for (int j = col; j < col + size; j++) {
+                if (color != board[i][j]) {
+                    return false;
+                }
+            }
         }
-        return temp * temp % C;
-
+        return true;
     }
 }
