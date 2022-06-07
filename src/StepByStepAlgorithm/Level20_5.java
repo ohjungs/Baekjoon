@@ -59,25 +59,20 @@ public class Level20_5 {
      * 
      */
     public static long pow(long base, long expo) {
-        // 지수가 1일 경우 base^1 이므로 base % P를 리턴
-        if (expo == 1) {
-            return base % P;
+        long result = 1;
+
+        while (expo > 0) {
+
+            // 지수가 홀 수면 반환하고자 하는 result에 곱해주도록 한다.
+            // 지수가 모두 짝수라면 expo가 1이 될 떄까지 base의 값이 제곱되다가 최종적으로 result에 담긴다.
+            if (expo % 2 == 1) {
+                result *= base;
+                result %= P;
+            }
+            base = (base * base) % P;
+            expo /= 2;
         }
-
-        // 지수의 절반에 해당하는 base^(expo / 2) 을 구한다.
-        long temp = pow(base, expo / 2);
-
-        /*
-         * 현재 지수가 홀 수 였다면
-         * base^(expo / 2) * base^(expo / 2) * base 이므로
-         * base를 한 번 더 곱해주어야 한다.
-         * 
-         * ex) A^9 = A^4 * A^4 * A
-         */
-        if (expo % 2 == 1) {
-            return (temp * temp % P) * base % P;
-        }
-        return temp * temp % P;
-
+        return result;
     }
+
 }
