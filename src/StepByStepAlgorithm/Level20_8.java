@@ -24,48 +24,59 @@ public class Level20_8 {
     // 첫째 줄에 n번째 피보나치 수를 1,000,000,007으로 나눈 나머지를 출력한다.
 
     final static long MOD = 1000000007;
-    public static long[][] origin = { { 1, 1 }, { 1, 0 } }; // 초기값을 갖고있는 행렬
 
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        /*
-         * n
-         * | 1 1 | | F(n+1) F(n) |
-         * A^n = | | = | |
-         * | 1 0 | | F(n) F(n-1) |
-         */
-
-        long[][] A = { { 1, 1 }, { 1, 0 } };
-
         long N = Long.parseLong(br.readLine());
 
-        // Fn 을 구하려면 A행렬을 n-1제곱 한 뒤 반환된 행렬 A11 원소를 출력하면 된다.
-
-        System.out.println(pow(A, N - 1)[0][0]);
-    }
-
-    // 행렬 제곱 분할정복 메소드
-    public static long[][] pow(long[][] A, long exp) {
-
-        // 지수가 1 또는 0일 땐 A를 return한다.
-        if (exp == 1 || exp == 0) {
-            return A;
+        // N이 1이거나 0이라면 N을 출력하고 종료
+        if (N == 1 || N == 0) {
+            System.out.println(N);
+            return;
         }
 
-        // 지수를 절반으로 분할하여 재귀호출
-        long[][] ret = pow(A, exp / 2);
+        // A^(n-1)의 [0][0] 원소를 구하면 되므로 1을 빼준다.
+        N--;
 
-        // 하위 재귀에서 얻은 행렬을 제곱해준다.
-        ret = multiply(ret, ret);
+        long[][] origin = { { 1, 1 }, { 1, 0 } };
+        long[][] A = { { 1, 0 }, { 0, 1 } }; // 초기 값은 단위행렬(I)로 초기화해준다.
 
-        // 만약 지수가 홀수라면 마지막에 A^1 (origin)을 곱해준다.
-        if (exp % 2 == 1L) {
-            ret = multiply(ret, origin);
+        /*
+         * origin 행렬은 이전 loop에서 제곱값을 갖고있는 행렬이고,
+         * A는 지수가 홀 수 일 때, 이전 loop에서 얻은 제곱 행렬인 origin과
+         * 현재 A 행렬을 곱해주는 방식으로 간다.
+         * 
+         * 즉, 재귀 과정을 역순으로 거치면 된다.
+         * 
+         * ex)
+         * A^11 과정일 떄,
+         * 
+         * N = 11 (N % 2 == 1) -> I * A^1 = A^1 (result)
+         * -> A^1 * A^1 = A^2 (origin)
+         * 
+         * N = 5 (N % 2 == 1) -> A^1 * A^2 = A^3 (result)
+         * -> A^2 * A^2 = A^4 (origin)
+         * 
+         * N = 2 (N % 2 == 0) -> A^4 * A^4 = A^8 (origin)
+         *
+         * N = 1 (N % 2 == 1) -> A^3 * A^8 = A^11 (result)
+         * -> A^8 * A^8 = A^16 (origin)
+         */
+        while (N > 0) {
+
+            // 지수가 홀수라면 origin 배열을 한 번 더 곱해준다.
+            if (N % 2 == 1) { // b % 2 == 1 을 (b & 1L) != 0L 으로도 수정할 수 있다.
+                A = multiply(A, origin);
+            }
+            origin = multiply(origin, origin);
+
+            N /= 2;
         }
 
-        return ret;
+        System.out.println(A[0][0]);
+
     }
 
     // o1과 o2 행렬을 곱해주는 메소드
