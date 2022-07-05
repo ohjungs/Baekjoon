@@ -55,7 +55,9 @@ public class Level20_9 {
 
     public static long getArea(int len) {
 
-        Stack<Integer> stack = new Stack<Integer>();
+        int[] stack = new int[len]; // 스택 배열
+        int sSize = 0; // 요소의 개수(사이즈)
+        int top = -1; // top을 가리키는 변수
 
         long maxArea = 0;
 
@@ -66,9 +68,9 @@ public class Level20_9 {
              * i번째 막대보다 작은 이전 체인들을 pop하면서 최대 넓이를 구해준다.
              * 
              */
-            while ((!stack.isEmpty()) && histogram[stack.peek()] >= histogram[i]) {
-                int height = histogram[stack.pop()]; // 이전 체인의 높이
-
+            while (sSize > 0 && histogram[stack[top]] >= histogram[i]) {
+                int height = histogram[stack[top--]]; // 이전 체인의 높이
+                sSize--;
                 /*
                  * pop한 뒤 그 다음의 이전체인이 만약 없다면 0번째 index 부터 (i-1)번째 인덱스까지가
                  * 유일한 폭이 된다. (폭은 i가 됨)
@@ -76,7 +78,7 @@ public class Level20_9 {
                  * 체인이 들어있다는 것이므로 (i-1)번째 index에서 그 다음 이전 체인의 index를
                  * 빼준 것이 폭이 된다.
                  */
-                long width = stack.isEmpty() ? i : i - 1 - stack.peek();
+                long width = sSize == 0 ? i : i - 1 - stack[top];
 
                 maxArea = Math.max(maxArea, height * width); // 최대 넓이 값 갱신
             }
@@ -85,23 +87,26 @@ public class Level20_9 {
              * 위 과정이 끝나면 스택에 저장되어있는 체인은 모두 i보다 작거나 같은
              * 체인들 뿐이므로 i번째 index를 넣어준다.
              */
-            stack.push(i);
+
+            stack[++top] = i;
+            sSize++;
 
         }
 
         // 위 과정이 끝나고 Stack에 남아있는 체인들이 존재할 수 있으므로 나머지도 위와같은 과정을 거친다.
-        while (!stack.isEmpty()) {
-            int height = histogram[stack.pop()];
-
+        while (sSize > 0) {
+            int height = histogram[stack[top--]];
+            sSize--;
             /*
              * 만약 pop하고 난 뒤 스택이 비어있다면 이는 남아있는 체인이 없다는 뜻이고
              * 고로 0 ~ (len - 1) 까지인 전체 폭이 width가 되는 것이다.
              */
-            long width = stack.isEmpty() ? len : len - 1 - stack.peek();
+            long width = sSize == 0 ? len : len - 1 - stack[top];
             maxArea = Math.max(maxArea, width * height);
         }
 
         return maxArea;
 
     }
+
 }
