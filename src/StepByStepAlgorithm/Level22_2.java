@@ -1,7 +1,11 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Level22_2 {
     // 10816 문제
@@ -17,25 +21,27 @@ public class Level22_2 {
 
     // 출력
     // 첫째 줄에 입력으로 주어진 M개의 수에 대해서, 각 수가 적힌 숫자 카드를 상근이가 몇 개 가지고 있는지를 공백으로 구분해 출력한다.
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        Scanner in = new Scanner(System.in);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int N = in.nextInt();
+        int N = Integer.parseInt(br.readLine());
         int[] arr = new int[N];
 
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
         for (int i = 0; i < N; i++) {
-            arr[i] = in.nextInt();
+            arr[i] = Integer.parseInt(st.nextToken());
         }
 
-        Arrays.sort(arr); // 이분 탐색을 하기 위해서는 반드시 정렬되어있어야 한다.
+        Arrays.sort(arr);
 
-        int M = in.nextInt();
+        int M = Integer.parseInt(br.readLine());
 
+        st = new StringTokenizer(br.readLine(), " ");
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < M; i++) {
-            int key = in.nextInt();
+            int key = Integer.parseInt(st.nextToken());
 
             // upperBound와 lowerBound의 차이 값을 구한다.
             sb.append(upperBound(arr, key) - lowerBound(arr, key)).append(' ');
