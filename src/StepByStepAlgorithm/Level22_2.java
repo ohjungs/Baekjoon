@@ -26,39 +26,24 @@ public class Level22_2 {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        /*
-         * HashMap<Key, Value>
-         * Key = 입력되는 원소
-         * Value = 원소의 개수(=중복 입력 된 원소의 수)
-         */
-        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+        int[] counting = new int[20000001]; // 입력받는 수의 범위 : -10,000,000 ~ 10,000,000
 
         int N = Integer.parseInt(br.readLine());
 
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
         for (int i = 0; i < N; i++) {
-            int key = Integer.parseInt(st.nextToken());
-
-            /*
-             * getOrDefault(key, defaultValue)
-             * key에 대해 map에 저장 된 value를 반환한다.
-             * 만약 value가 없을 경우 defaultValue값을 반환한다.
-             */
-            map.put(key, map.getOrDefault(key, 0) + 1);
+            counting[Integer.parseInt(st.nextToken()) + 10000000]++; // 해당 인덱스의 값 증가
         }
 
         int M = Integer.parseInt(br.readLine());
 
+        st = new StringTokenizer(br.readLine(), " ");
         StringBuilder sb = new StringBuilder();
 
-        st = new StringTokenizer(br.readLine(), " ");
         for (int i = 0; i < M; i++) {
-            int key = Integer.parseInt(st.nextToken());
-
-            sb.append(map.getOrDefault(key, 0)).append(' ');
+            sb.append(counting[Integer.parseInt(st.nextToken()) + 10000000]).append(' ');
         }
-
         System.out.println(sb);
     }
 }
