@@ -1,6 +1,10 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Level22_3 {
     // 1654 랜선 자르기 문제
@@ -22,11 +26,13 @@ public class Level22_3 {
 
     // 출력
     // 첫째 줄에 N개를 만들 수 있는 랜선의 최대 길이를 센티미터 단위의 정수로 출력한다.
-    public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int K = in.nextInt();
-        int N = in.nextInt();
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+
+        int K = Integer.parseInt(st.nextToken());
+        int N = Integer.parseInt(st.nextToken());
 
         int[] arr = new int[K];
 
@@ -34,7 +40,7 @@ public class Level22_3 {
 
         // 입력과 동시에 해당 랜선의 길이가 최댓값인지를 확인하고 max를 갱신
         for (int i = 0; i < K; i++) {
-            arr[i] = in.nextInt();
+            arr[i] = Integer.parseInt(br.readLine());
             if (max < arr[i]) {
                 max = arr[i];
             }
@@ -43,7 +49,7 @@ public class Level22_3 {
         // 반드시 max에서 +1 값이어야 한다.
         max++;
 
-        long min = 0; // 탐색 길이 최솟값
+        long min = 0;
         long mid = 0;
 
         while (min < max) {
