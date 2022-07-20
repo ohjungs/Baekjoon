@@ -1,6 +1,10 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Level22_4 {
     // 2805 문제
@@ -25,20 +29,24 @@ public class Level22_4 {
 
     // 출력
     // 적어도 M미터의 나무를 집에 가져가기 위해서 절단기에 설정할 수 있는 높이의 최댓값을 출력한다.
-    public static void main(String[] args) {
 
-        Scanner in = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
 
-        int N = in.nextInt();
-        int M = in.nextInt();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
 
         int[] tree = new int[N];
 
         int min = 0;
         int max = 0;
 
+        st = new StringTokenizer(br.readLine(), " ");
         for (int i = 0; i < N; i++) {
-            tree[i] = in.nextInt();
+            tree[i] = Integer.parseInt(st.nextToken());
 
             /*
              * 나무들 중 최댓값을 구하기 위해 매 입력 때마다 max 변수와 비교하여
