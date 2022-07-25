@@ -1,7 +1,11 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Level22_5 {
     // 2110 문제
@@ -20,20 +24,19 @@ public class Level22_5 {
     // 첫째 줄에 가장 인접한 두 공유기 사이의 최대 거리를 출력한다
     public static int[] house;
 
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        Scanner in = new Scanner(System.in);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int N = in.nextInt();
-        int M = in.nextInt();
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
 
         house = new int[N];
 
         for (int i = 0; i < N; i++) {
-            house[i] = in.nextInt();
+            house[i] = Integer.parseInt(br.readLine());
         }
 
         Arrays.sort(house); // 이분탐색을 하기 위해선 반드시 정렬 되어있어야 한다.
