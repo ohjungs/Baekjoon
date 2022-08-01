@@ -1,6 +1,10 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Level22_7 {
     // 12015 문제
@@ -17,17 +21,19 @@ public class Level22_7 {
     // 출력
     // 첫째 줄에 수열 A의 가장 긴 증가하는 부분 수열의 길이를 출력한다.
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        Scanner in = new Scanner(System.in);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int N = in.nextInt();
+        int N = Integer.parseInt(br.readLine());
 
         int[] seq = new int[N];
         int[] LIS = new int[N];
 
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+
         for (int i = 0; i < N; i++) {
-            seq[i] = in.nextInt();
+            seq[i] = Integer.parseInt(st.nextToken());
         }
 
         // LIS 초기 값으로 첫 번째 수열의 값을 갖는다.
@@ -47,7 +53,7 @@ public class Level22_7 {
                 int lo = 0;
                 int hi = lengthOfLIS;
                 while (lo < hi) {
-                    int mid = (lo + hi) / 2;
+                    int mid = (lo + hi) >>> 1;
 
                     if (LIS[mid] < key) {
                         lo = mid + 1;
