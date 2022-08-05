@@ -1,5 +1,10 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.PriorityQueue;
+
 public class Level23_1 {
     // 11279 문제
     // 널리 잘 알려진 자료구조 중 최대 힙이 있다. 최대 힙을 이용하여 다음과 같은 연산을 지원하는 프로그램을 작성하시오.
@@ -15,4 +20,22 @@ public class Level23_1 {
 
     // 출력
     // 입력에서 0이 주어진 회수만큼 답을 출력한다. 만약 배열이 비어 있는 경우인데 가장 큰 값을 출력하라고 한 경우에는 0을 출력하면 된다.
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int N = Integer.parseInt(br.readLine());
+        // 최대힙
+        PriorityQueue<Integer> queue = new PriorityQueue<>((o1, o2) -> o2 - o1);
+        for (int i = 0; i < N; i++) {
+            int n = Integer.parseInt(br.readLine());
+            if (n == 0) {
+                if (queue.isEmpty()) {
+                    System.out.println(0);
+                } else {
+                    System.out.println(queue.poll());
+                }
+            } else {
+                queue.offer(n);
+            }
+        }
+    }
 }
