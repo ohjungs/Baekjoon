@@ -1,5 +1,11 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
 public class Level23_2 {
     // 1927번 최 소힙 문제
     // 널리 잘 알려진 자료구조 중 최소 힙이 있다. 최소 힙을 이용하여 다음과 같은 연산을 지원하는 프로그램을 작성하시오.
@@ -15,5 +21,23 @@ public class Level23_2 {
 
     // 출력
     // 입력에서 0이 주어진 횟수만큼 답을 출력한다. 만약 배열이 비어 있는 경우인데 가장 작은 값을 출력하라고 한 경우에는 0을 출력하면 된다.
+    private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
+    public static void main(String[] args) throws IOException {
+        int n = Integer.parseInt(br.readLine());
+
+        PriorityQueue<Integer> queue = new PriorityQueue<>(Comparator.comparingInt(x -> x));
+
+        for (int i = 0; i < n; i++) {
+            int val = Integer.parseInt(br.readLine());
+            if (val == 0) {
+                if (queue.isEmpty())
+                    System.out.println("0");
+                else
+                    System.out.println(queue.poll());
+            } else {
+                queue.add(val);
+            }
+        }
+    }
 }
