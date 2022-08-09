@@ -1,5 +1,9 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.PriorityQueue;
+
 public class Level23_3 {
     // 11286절댓값 힙 문제
     // 절댓값 힙은 다음과 같은 연산을 지원하는 자료구조이다.
@@ -17,4 +21,31 @@ public class Level23_3 {
     // 출력
     // 입력에서 0이 주어진 회수만큼 답을 출력한다. 만약 배열이 비어 있는 경우인데 절댓값이 가장 작은 값을 출력하라고 한 경우에는 0을
     // 출력하면 된다.
+
+    private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+    public static void main(String[] args) throws IOException {
+        int n = Integer.parseInt(br.readLine());
+
+        PriorityQueue<Integer> queue = new PriorityQueue<>((o1, o2) -> {
+            int abs1 = Math.abs(o1);
+            int abs2 = Math.abs(o2);
+
+            if (abs1 == abs2)
+                return o1 > o2 ? 1 : -1;
+            return abs1 - abs2;
+        });
+
+        for (int i = 0; i < n; i++) {
+            int val = Integer.parseInt(br.readLine());
+            if (val == 0) {
+                if (queue.isEmpty())
+                    System.out.println("0");
+                else
+                    System.out.println(queue.poll());
+            } else {
+                queue.add(val);
+            }
+        }
+    }
 }
