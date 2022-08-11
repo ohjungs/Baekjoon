@@ -3,6 +3,7 @@ package StepByStepAlgorithm;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.PriorityQueue;
+import java.util.Scanner;
 
 public class Level23_4 {
     // 1655 문제
@@ -18,30 +19,28 @@ public class Level23_4 {
 
     // 출력
     // 한 줄에 하나씩 N줄에 걸쳐 백준이의 동생이 말해야 하는 수를 순서대로 출력한다.
-    private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
 
-    public static void main(String[] args) throws IOException {
-        int n = Integer.parseInt(br.readLine());
-        StringBuilder sb = new StringBuilder();
-
-        PriorityQueue<Integer> minHeap = new PriorityQueue<>((o1, o2) -> o1 - o2);
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
         PriorityQueue<Integer> maxHeap = new PriorityQueue<>((o1, o2) -> o2 - o1);
 
+        int n = scan.nextInt();
+
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < n; i++) {
-            int num = Integer.parseInt(br.readLine());
+            int num = scan.nextInt();
 
             if (minHeap.size() == maxHeap.size())
-                maxHeap.offer(num);
+                maxHeap.add(num);
             else
-                minHeap.offer(num);
+                minHeap.add(num);
 
-            if (!minHeap.isEmpty() && !maxHeap.isEmpty())
-                if (minHeap.peek() < maxHeap.peek()) {
-                    int tmp = minHeap.poll();
-                    minHeap.offer(maxHeap.poll());
-                    maxHeap.offer(tmp);
-                }
-
+            if (!minHeap.isEmpty() && !maxHeap.isEmpty() && minHeap.peek() < maxHeap.peek()) {
+                int temp = minHeap.poll();
+                minHeap.add(maxHeap.poll());
+                maxHeap.add(temp);
+            }
             sb.append(maxHeap.peek() + "\n");
         }
         System.out.println(sb);
