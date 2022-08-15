@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class Level24_1 {
@@ -32,44 +33,45 @@ public class Level24_1 {
 
     // 출력
     // 프로그램은 표준 출력에 출력한다. 각 테스트 데이터마다 정확히 한 행에 출력하는데, 모든 장을 합치는데 필요한 최소비용을 출력한다.
-    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-    static StringTokenizer st = null;
+    public static void main(String[] args) {
+        StringBuilder sb = new StringBuilder();
+        Scanner sc = new Scanner(System.in);
+        int T = sc.nextInt();
+        while (T-- > 0) {
+            int K = sc.nextInt();
+            int[] arr = new int[K + 1];
+            int[] sum = new int[K + 1];
+            int[][] dp = new int[502][502];
+            int[][] kk = new int[502][502]; // Knuth 최적화를 쓰기 위해 점화식 형태를 맞춰주기 위함.
 
-    public static void main(String[] args) throws Exception {
-        int t;
-
-        t = Integer.parseInt(br.readLine());
-        for (int tc = 0; tc < t; tc++) {
-            int k;
-            int[] novel;
-            int[] sum;
-            int[][] dp;
-
-            k = Integer.parseInt(br.readLine());
-            novel = new int[k + 1];
-            dp = new int[k + 1][k + 1];
-            sum = new int[k + 1];
-
-            st = new StringTokenizer(br.readLine());
-            for (int i = 1; i <= k; i++) {
-                novel[i] = Integer.parseInt(st.nextToken());
-                sum[i] = sum[i - 1] + novel[i];
+            for (int i = 1; i <= K; i++) {
+                arr[i] = sc.nextInt();
+                sum[i] = sum[i - 1] + arr[i];
             }
 
-            for (int n = 1; n <= k; n++) {
-                for (int from = 1; from + n <= k; from++) {
-                    int to = from + n;
-                    dp[from][to] = Integer.MAX_VALUE;
-                    for (int divide = from; divide < to; divide++) {
-                        dp[from][to] = Math.min(dp[from][to],
-                                dp[from][divide] + dp[divide + 1][to] + sum[to] - sum[from - 1]);
+            for (int i = 1; i <= K; i++) {
+                dp[i - 1][i] = 0;
+                kk[i - 1][i] = i;
+            }
+
+            // DP 최적화 기법 중 하나인 Knuth Optimization을 사용한 코드 O(N^2)
+            for (int d = 2; d <= K; d++) {
+                for (int i = 0; i + d <= K; i++) {
+                    int j = i + d;
+                    dp[i][j] = Integer.MAX_VALUE;
+                    for (int k = kk[i][j - 1]; k <= kk[i + 1][j]; k++) {
+                        int v = dp[i][k] + dp[k][j] + (sum[j] - sum[i]);
+                        if (dp[i][j] > v) {
+                            dp[i][j] = v;
+                            kk[i][j] = k;
+                        }
                     }
                 }
             }
+            sb.append(dp[0][K]).append("\n");
 
-            System.out.println(dp[1][k]);
         }
 
+        System.out.println(sb.toString());
     }
 }
