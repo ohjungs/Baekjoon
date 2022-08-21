@@ -1,5 +1,11 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
 public class Level24_3 {
     // 1520 문제
     // 여행을 떠난 세준이는 지도를 하나 구하였다. 이 지도는 아래 그림과 같이 직사각형 모양이며 여러 칸으로 나뉘어져 있다. 한 칸은 한 지점을
@@ -19,4 +25,54 @@ public class Level24_3 {
 
     // 출력
     // 첫째 줄에 이동 가능한 경로의 수 H를 출력한다. 모든 입력에 대하여 H는 10억 이하의 음이 아닌 정수이다.
+    static int n, m;
+    static int[][] map, dp;
+    static int[] dx = { -1, 1, 0, 0 };
+    static int[] dy = { 0, 0, -1, 1 };
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+
+        map = new int[n][m];
+        dp = new int[n][m];
+
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(dp[i], -1);
+        }
+
+        for (int i = 0; i < n; i++) {
+            st = new StringTokenizer(br.readLine());
+            for (int j = 0; j < m; j++) {
+                map[i][j] = Integer.parseInt(st.nextToken());
+            }
+        }
+        System.out.println(dfs(0, 0));
+    }
+
+    static int dfs(int x, int y) {
+        if (x == n - 1 && y == m - 1)
+            return 1;
+        if (dp[x][y] != -1)
+            return dp[x][y];
+
+        int pos = map[x][y];
+        dp[x][y] = 0;
+        for (int i = 0; i < 4; i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+
+            if (nx < 0 || nx > n - 1 || ny < 0 || ny > m - 1)
+                continue;
+
+            int nxt = map[nx][ny];
+            if (pos > nxt) {
+                dp[x][y] += dfs(nx, ny);
+            }
+        }
+        return dp[x][y];
+    }
 }
