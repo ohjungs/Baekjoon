@@ -34,50 +34,52 @@ public class Level24_4 {
     // 출력
     // 총 M개의 줄에 걸쳐 홍준이의 질문에 대한 명우의 답을 입력으로 주어진 순서에 따라서 출력한다. 팰린드롬인 경우에는 1, 아닌 경우에는
     // 0을 출력한다.
-    private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static boolean[][] dp;
-
     public static void main(String[] args) throws IOException {
-        int n = Integer.parseInt(br.readLine());
-        int[] arr = new int[n + 1];
-        dp = new boolean[n + 1][n + 1];
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        for (int i = 1; i <= n; i++)
-            arr[i] = Integer.parseInt(st.nextToken());
+        int n = Integer.parseInt(reader.readLine());
+        int[] nums = new int[n + 1];
 
-        solve(arr, n);
-        int m = Integer.parseInt(br.readLine());
+        StringTokenizer st = new StringTokenizer(reader.readLine());
+        for (int i = 1; i <= n; i++) {
+            nums[i] = Integer.parseInt(st.nextToken());
+        }
+
+        int m = Integer.parseInt(reader.readLine());
+
         StringBuilder sb = new StringBuilder();
 
-        for (int i = 0; i < m; i++) {
-            st = new StringTokenizer(br.readLine());
-            int start = Integer.parseInt(st.nextToken());
-            int end = Integer.parseInt(st.nextToken());
+        while (m-- > 0) {
 
-            if (dp[start][end])
+            st = new StringTokenizer(reader.readLine());
+
+            int left = Integer.parseInt(st.nextToken());
+            int right = Integer.parseInt(st.nextToken());
+
+            if (isPelin(nums, left, right)) {
                 sb.append("1\n");
-            else
+            } else {
                 sb.append("0\n");
-        }
-
-        System.out.println(sb);
-    }
-
-    public static void solve(int[] arr, int n) {
-        for (int i = 1; i <= n; i++)
-            dp[i][i] = true;
-
-        for (int i = 1; i <= n - 1; i++)
-            if (arr[i] == arr[i + 1])
-                dp[i][i + 1] = true;
-
-        for (int i = 2; i < n; i++) {
-            for (int j = 1; j <= n - i; j++) {
-                if (arr[j] == arr[j + i] && dp[j + 1][j + i - 1])
-                    dp[j][j + i] = true;
             }
-        }
+
+        } // while
+
+        System.out.print(sb);
+
     }
+
+    private static boolean isPelin(int[] nums, int left, int right) {
+
+        while (left <= right) {
+            if (nums[left] != nums[right]) {
+                return false;
+            }
+
+            left++;
+            right--;
+        } // while
+
+        return true;
+    }// isPlein
 
 }
