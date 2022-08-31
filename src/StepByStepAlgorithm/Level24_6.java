@@ -1,5 +1,9 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.StringTokenizer;
+
 public class Level24_6 {
     // 2293 문제
     // n가지 종류의 동전이 있다. 각각의 동전이 나타내는 가치는 다르다. 이 동전을 적당히 사용해서, 그 가치의 합이 k원이 되도록 하고 싶다.
@@ -13,4 +17,27 @@ public class Level24_6 {
 
     // 출력
     // 첫째 줄에 경우의 수를 출력한다. 경우의 수는 231보다 작다.
+
+    private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    private static int n, k;
+    private static int[] arr, dp;
+
+    public static void main(String[] args) throws IOException {
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(st.nextToken());
+        k = Integer.parseInt(st.nextToken());
+
+        arr = new int[n + 1];
+        dp = new int[k + 1];
+        dp[0] = 1;
+
+        for (int i = 1; i <= n; i++) {
+            arr[i] = Integer.parseInt(br.readLine());
+            for (int j = arr[i]; j <= k; j++)
+                dp[j] += dp[j - arr[i]];
+        }
+
+        System.out.println(dp[k]);
+    }
+
 }
