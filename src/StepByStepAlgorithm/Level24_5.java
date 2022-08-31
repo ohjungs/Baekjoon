@@ -1,6 +1,7 @@
 package StepByStepAlgorithm;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -36,48 +37,54 @@ public class Level24_5 {
     // 출력
     // 주어진 각 구슬의 무게에 대하여 확인이 가능하면 Y, 아니면 N 을 차례로 출력한다. 출력은 한 개의 줄로 이루어지며, 각 구슬에 대한 답
     // 사이에는 빈칸을 하나씩 둔다.
-    static int n, m;// 추의 개수 구슬의 개수
-    static int[] chu;// 추
-    static int[] ball;// 구슬
-    static boolean[] flag = new boolean[40001];// 구슬 무게는 40000까지 가능
-    static ArrayList<Integer> arr = new ArrayList<>();
+    static int N;
+    static int[] chu;
+    static int num;
+    static int[] gusul;
+    static boolean[][] cache;
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        n = sc.nextInt();
-        chu = new int[n]; // 추의 무게
-        arr.add(0);// 처음 계산하기 위한 수 0을 넣어준다.
-        flag[0] = true; // 무게의 차가 0인 것을 초기화해서 true
-        for (int i = 0; i < n; i++) {
-            chu[i] = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        N = Integer.parseInt(br.readLine());
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        chu = new int[N];
+        for (int i = 0; i < N; i++) {
+            chu[i] = Integer.parseInt(st.nextToken());
         }
-        m = sc.nextInt();
-        ball = new int[m];
-        for (int i = 0; i < m; i++) {
-            ball[i] = sc.nextInt();
+        num = Integer.parseInt(br.readLine());
+        gusul = new int[num];
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < num; i++) {
+            gusul[i] = Integer.parseInt(st.nextToken());
         }
-
-        for (int i = 0; i < n; i++) {
-            int size = arr.size(); // 앞의 추에서 이미 계산한 무게만큼만 돌려준다.
-            for (int j = 0; j < size; j++) { // 앞에 계산된 무게에서 현재 무게를 더하고 빼는 경우 구해준다.
-                int x = arr.get(j);// 계산된 무게 중 하나
-                if (x + chu[i] <= 40000 && flag[x + chu[i]] == false) {// 이전까지 가능한 무게에서 더했을 때
-                    arr.add(x + chu[i]); // 새로운 무게 더해줌
-                    flag[x + chu[i]] = true;
-                }
-                if (flag[Math.abs(x - chu[i])] == false) {// 현재 추의 무게와 이전에 계산된 무게들의 차
-                    arr.add(Math.abs(x - chu[i]));
-                    flag[Math.abs(x - chu[i])] = true;
+        cache = new boolean[N + 1][40001];
+        dp(0, 0);
+        for (int i = 0; i < num; i++) {
+            boolean isPossible = false;
+            for (int j = 0; j < N + 1; j++) {
+                if (cache[j][gusul[i]]) {
+                    System.out.print("Y ");
+                    isPossible = true;
+                    break;
                 }
             }
-        }
-
-        for (int i = 0; i < m; i++) {
-            if (flag[ball[i]]) { // 계산되었던 수라면 가능하다 y
-                System.out.print("Y ");
-            } else {
+            if (!isPossible)
                 System.out.print("N ");
-            }
         }
+    }
+
+    private static void dp(int n, int weight) {
+        if (weight < 0 || weight > 40000)
+            return;
+        if (cache[n][weight])
+            return;
+        cache[n][weight] = true;
+        if (n == N)
+            return;
+
+        dp(n + 1, weight + chu[n]);// 현재꺼를 더하는 경우
+        dp(n + 1, weight); // 현재꺼를 더하지 않는 경우
+        dp(n + 1, (weight < chu[n]) ? chu[n] - weight : weight - chu[n]); // 현재꺼를 빼는 경
+
     }
 }
