@@ -2,6 +2,7 @@ package StepByStepAlgorithm;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -20,25 +21,21 @@ public class Level24_6 {
     // 첫째 줄에 경우의 수를 출력한다. 경우의 수는 231보다 작다.
 
     public static void main(String[] args) throws Exception {
-        Scanner sc = new Scanner(System.in);
-
-        int n = sc.nextInt();
-        int k = sc.nextInt();
-
-        int[] coin = new int[n + 1];
-        for (int i = 1; i <= n; i++) {
-            coin[i] = sc.nextInt();
-        }
-
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int k = Integer.parseInt(st.nextToken());
         int[] dp = new int[k + 1];
-        dp[0] = 1;
-        for (int i = 1; i <= n; i++) {
-            for (int j = coin[i]; j <= k; j++) {
-                dp[j] = dp[j] + dp[j - coin[i]];
+        for (int t = 0; t < n; t++) {
+            int coin = Integer.parseInt(br.readLine());
+            for (int i = 1; i <= k; i++) {
+                if (i - coin > 0) {
+                    dp[i] = dp[i] + dp[i - coin];
+                } else if (i - coin == 0) {
+                    dp[i]++;
+                }
             }
         }
-
-        System.out.println(dp[k]);
-        sc.close();
+        System.out.print(dp[k]);
     }
 }
