@@ -37,60 +37,47 @@ Z
    
    
    
-    public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
-        int appNum,needMemory;
-        int[][] memoryList;
-        int costMAX = 10000;
-        
-        // x비용을 사용했을 때 최대 확보할 수 있는 메모리 바이트
-        int[] cost = new int[costMAX + 1];
-        int answer = 0;
-
-        StringTokenizer st = new StringTokenizer(br.readLine());
-
-        appNum = Integer.parseInt(st.nextToken());
-        needMemory = Integer.parseInt(st.nextToken());
-
-
-        memoryList = new int[2][appNum];
-
-        Arrays.fill(cost, -1);
-        cost[0] = 0;
-
-        // 비용 & 메모리 저장
-        for (int x = 0; x < 2; x++) {
-            st = new StringTokenizer(br.readLine());
-
-            for (int y = 0; y < appNum; y++) {
-                memoryList[x][y] = Integer.parseInt(st.nextToken());
-            }
-        }
-
-        
-        for (int x = 0; x < appNum; x++) {
-            for (int y = costMAX; y >= memoryList[1][x]; y--) {
-                if (cost[y - memoryList[1][x]] != -1) {
-                    cost[y] = Math.max(cost[y], cost[y - memoryList[1][x]] + memoryList[0][x]);
-                }
-            }
-        }
-
-        // M 바이트 이상 확보하기 위한 최소 비용 계산
-        for(int x=0;x<=costMAX;x++){
-            if (cost[x] >= needMemory) {
-                answer = x;
-                break;
-            }
-        }
-
-        bw.write(String.valueOf(answer));
-        bw.flush();
-        
-    }
-
+    public static void main(String [] args) throws IOException {
+		int N, M, sum=0;
+		int memory[], cost[], dp[];
+		
+		//입력받기
+		BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st= new StringTokenizer(br.readLine());
+		
+		N= Integer.parseInt(st.nextToken());
+		M= Integer.parseInt(st.nextToken());
+		memory= new int[N];
+		cost= new int[N];
+		
+		st= new StringTokenizer(br.readLine());
+		for(int i=0; i<N; i++) {
+			memory[i]= Integer.parseInt(st.nextToken());
+		}
+		
+		st= new StringTokenizer(br.readLine());
+		for(int i=0; i<N; i++) {
+			cost[i]= Integer.parseInt(st.nextToken());
+			sum+=cost[i];
+		}
+		
+		//dp
+		dp= new int[sum+1];
+		for(int i=0; i<N; i++) {
+			for(int j=sum; j>=cost[i]; j--) {
+				dp[j]=Math.max(dp[j], dp[j-cost[i]]+memory[i]);
+			}
+		}
+		
+		//출력
+		for(int i=0; i<=sum; i++) {
+			if(dp[i]>=M) {
+				System.out.println(i);
+				break;
+			}
+		}
+		br.close();
+	}
 
 
 }
