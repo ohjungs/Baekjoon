@@ -34,50 +34,54 @@ Z
     // 출력
     // 필요한 메모리 M 바이트를 확보하기 위한 앱 비활성화의 최소의 비용을 계산하여 한 줄에 출력해야 한다.
    
-   
-   
-   
-    public static void main(String [] args) throws IOException {
-		int N, M, sum=0;
-		int memory[], cost[], dp[];
-		
-		//입력받기
-		BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st= new StringTokenizer(br.readLine());
-		
-		N= Integer.parseInt(st.nextToken());
-		M= Integer.parseInt(st.nextToken());
-		memory= new int[N];
-		cost= new int[N];
-		
-		st= new StringTokenizer(br.readLine());
-		for(int i=0; i<N; i++) {
-			memory[i]= Integer.parseInt(st.nextToken());
-		}
-		
-		st= new StringTokenizer(br.readLine());
-		for(int i=0; i<N; i++) {
-			cost[i]= Integer.parseInt(st.nextToken());
-			sum+=cost[i];
-		}
-		
-		//dp
-		dp= new int[sum+1];
-		for(int i=0; i<N; i++) {
-			for(int j=sum; j>=cost[i]; j--) {
-				dp[j]=Math.max(dp[j], dp[j-cost[i]]+memory[i]);
-			}
-		}
-		
-		//출력
-		for(int i=0; i<=sum; i++) {
-			if(dp[i]>=M) {
-				System.out.println(i);
-				break;
-			}
-		}
-		br.close();
-	}
+	public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        long M = Long.parseLong(st.nextToken());
+        App[] apps = new App[N];
+        st = new StringTokenizer(br.readLine());
+        //입력을 받는 부분
+        for(int i = 0; i < N; i++){
+            apps[i] = new App(Long.parseLong(st.nextToken()), 0);
+        }
+        int allCost = 0;
+        st = new StringTokenizer(br.readLine());
+        for(int i = 0; i < N; i++){
+            apps[i].c = Integer.parseInt(st.nextToken());
+            allCost += apps[i].c;
+        }
+        
+        //전체비용만큼 dp를 할당시킴(자료형은 long -> 10,000,000)
+        long[] dp = new long[allCost + 1];
+        //전체적으로 훑어줌
+        for(int i = 0; i < N; i++){
+            for(int j = allCost; j >= apps[i].c; j--){
+                dp[j] = Math.max(dp[j], dp[j - apps[i].c] + apps[i].m);
+            }
+        }
+        //0부터 전체비용까지 루프를 돌림. dp[i]값이 M이넘을 때의 비용이 최소비용이므로, 루프를 멈춰줌. 
+        for(int i = 0; i <= allCost; i++){
+            if(dp[i] >= M){
+                bw.write(i + "\n");
+                break;
+            }
+        }
+
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+
+    static class App{
+        long m;
+        int c;
+        public App(long m, int c){
+            this.m = m;
+            this.c = c;
+        }
+    }
 
 }
