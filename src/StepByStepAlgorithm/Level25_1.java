@@ -1,5 +1,11 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.StringTokenizer;
+
 public class Level25_1 {
     // 24479 문제
     // 오늘도 서준이는 깊이 우선 탐색(DFS) 수업 조교를 하고 있다. 아빠가 수업한 내용을 학생들이 잘 이해했는지 문제를 통해서 확인해보자.
@@ -24,4 +30,60 @@ public class Level25_1 {
     // 출력
     // 첫째 줄부터 N개의 줄에 정수를 한 개씩 출력한다. i번째 줄에는 정점 i의 방문 순서를 출력한다. 시작 정점의 방문 순서는 1이다. 시작
     // 정점에서 방문할 수 없는 경우 0을 출력한다.
+    static int cnt;
+    static int[] checked;
+    static ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        StringTokenizer strTo;
+
+        strTo = new StringTokenizer(br.readLine(), " ");
+        int n = Integer.parseInt(strTo.nextToken());
+        int m = Integer.parseInt(strTo.nextToken());
+        int r = Integer.parseInt(strTo.nextToken());
+
+        checked = new int[n + 1];
+
+        // 그래프 초기화
+        for (int i = 0; i <= n; i++) {
+            graph.add(new ArrayList<Integer>());
+        }
+        // list에 값 저장
+        for (int i = 0; i < m; i++) {
+            strTo = new StringTokenizer(br.readLine(), " ");
+            int u = Integer.parseInt(strTo.nextToken());
+            int v = Integer.parseInt(strTo.nextToken());
+
+            graph.get(u).add(v);
+            graph.get(v).add(u);
+        }
+        for (int i = 1; i <= n; i++) {
+            Collections.sort(graph.get(i));
+        }
+
+        cnt = 1;
+        dfs(r);
+
+        for (int i = 1; i < checked.length; i++) {
+            sb.append(checked[i]).append("\n");
+        }
+        System.out.println(sb);
+
+    }
+
+    private static void dfs(int node) {
+
+        checked[node] = cnt;
+
+        for (int i = 0; i < graph.get(node).size(); i++) {
+            int newNode = graph.get(node).get(i);
+            if (checked[newNode] == 0) {
+                cnt++;
+                dfs(newNode);
+            }
+        }
+
+    }
 }
