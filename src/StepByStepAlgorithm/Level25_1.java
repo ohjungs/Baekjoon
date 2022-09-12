@@ -1,6 +1,7 @@
 package StepByStepAlgorithm;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,60 +31,60 @@ public class Level25_1 {
     // 출력
     // 첫째 줄부터 N개의 줄에 정수를 한 개씩 출력한다. i번째 줄에는 정점 i의 방문 순서를 출력한다. 시작 정점의 방문 순서는 1이다. 시작
     // 정점에서 방문할 수 없는 경우 0을 출력한다.
+    static ArrayList<ArrayList<Integer>> graph;
+    static int[] seq;
+    static boolean[] visited;
     static int cnt;
-    static int[] checked;
-    static ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
-        StringTokenizer strTo;
+    public static void dfs(int root) {
 
-        strTo = new StringTokenizer(br.readLine(), " ");
-        int n = Integer.parseInt(strTo.nextToken());
-        int m = Integer.parseInt(strTo.nextToken());
-        int r = Integer.parseInt(strTo.nextToken());
-
-        checked = new int[n + 1];
-
-        // 그래프 초기화
-        for (int i = 0; i <= n; i++) {
-            graph.add(new ArrayList<Integer>());
+        for (int vertex : graph.get(root)) {
+            if (!visited[vertex]) {
+                seq[vertex] = cnt++;
+                visited[vertex] = true;
+                dfs(vertex);
+            }
         }
-        // list에 값 저장
-        for (int i = 0; i < m; i++) {
-            strTo = new StringTokenizer(br.readLine(), " ");
-            int u = Integer.parseInt(strTo.nextToken());
-            int v = Integer.parseInt(strTo.nextToken());
-
-            graph.get(u).add(v);
-            graph.get(v).add(u);
-        }
-        for (int i = 1; i <= n; i++) {
-            Collections.sort(graph.get(i));
-        }
-
-        cnt = 1;
-        dfs(r);
-
-        for (int i = 1; i < checked.length; i++) {
-            sb.append(checked[i]).append("\n");
-        }
-        System.out.println(sb);
 
     }
 
-    private static void dfs(int node) {
+    public static void main(String[] args) throws IOException {
 
-        checked[node] = cnt;
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        for (int i = 0; i < graph.get(node).size(); i++) {
-            int newNode = graph.get(node).get(i);
-            if (checked[newNode] == 0) {
-                cnt++;
-                dfs(newNode);
-            }
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
+        int start = Integer.parseInt(st.nextToken());
+
+        graph = new ArrayList<>();
+        seq = new int[n + 1];
+        visited = new boolean[n + 1];
+
+        for (int i = 0; i <= n; i++)
+            graph.add(new ArrayList<>());
+
+        for (int i = 0; i < m; i++) {
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            graph.get(a).add(b);
+            graph.get(b).add(a);
         }
+
+        for (int i = 1; i <= n; i++)
+            Collections.sort(graph.get(i));
+
+        seq[start] = 1;
+        visited[start] = true;
+        cnt = 2;
+        dfs(start);
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 1; i <= n; i++)
+            sb.append(seq[i] + "\n");
+
+        System.out.println(sb);
 
     }
 }
