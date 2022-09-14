@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class Level25_1 {
@@ -31,60 +32,55 @@ public class Level25_1 {
     // 출력
     // 첫째 줄부터 N개의 줄에 정수를 한 개씩 출력한다. i번째 줄에는 정점 i의 방문 순서를 출력한다. 시작 정점의 방문 순서는 1이다. 시작
     // 정점에서 방문할 수 없는 경우 0을 출력한다.
-    static ArrayList<ArrayList<Integer>> graph;
-    static int[] seq;
-    static boolean[] visited;
-    static int cnt;
+    private static BufferedReader br;
+    private static StringTokenizer st;
 
-    public static void dfs(int root) {
-
-        for (int vertex : graph.get(root)) {
-            if (!visited[vertex]) {
-                seq[vertex] = cnt++;
-                visited[vertex] = true;
-                dfs(vertex);
-            }
-        }
-
-    }
+    private static int N, M, R, cnt;
+    private static int[] order;
+    private static List<Integer>[] list;
 
     public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        st = new StringTokenizer(br.readLine());
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        R = Integer.parseInt(st.nextToken());
+        list = new ArrayList[N + 1];
+        for (int i = 1; i <= N; i++)
+            list[i] = new ArrayList<>();
 
-        int n = Integer.parseInt(st.nextToken());
-        int m = Integer.parseInt(st.nextToken());
-        int start = Integer.parseInt(st.nextToken());
-
-        graph = new ArrayList<>();
-        seq = new int[n + 1];
-        visited = new boolean[n + 1];
-
-        for (int i = 0; i <= n; i++)
-            graph.add(new ArrayList<>());
-
-        for (int i = 0; i < m; i++) {
+        for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-            graph.get(a).add(b);
-            graph.get(b).add(a);
+            int u = Integer.parseInt(st.nextToken());
+            int v = Integer.parseInt(st.nextToken());
+            list[u].add(v);
+            list[v].add(u);
         }
+        for (int i = 1; i <= N; i++)
+            Collections.sort(list[i]);
 
-        for (int i = 1; i <= n; i++)
-            Collections.sort(graph.get(i));
+        order = new int[N + 1];
+        order[R] = 1;
+        boolean[] visited = new boolean[N + 1];
+        visited[R] = true;
+        cnt = 1;
+        dfs(R, visited);
+        for (int i = 1; i <= N; i++)
+            System.out.println(order[i]);
+    }
 
-        seq[start] = 1;
-        visited[start] = true;
-        cnt = 2;
-        dfs(start);
+    private static void dfs(int x, boolean[] visited) {
+        if (list[x].size() == 0)
+            return;
 
-        StringBuilder sb = new StringBuilder();
-        for (int i = 1; i <= n; i++)
-            sb.append(seq[i] + "\n");
-
-        System.out.println(sb);
-
+        for (int i : list[x]) {
+            if (!visited[i]) {
+                cnt++;
+                order[i] = cnt;
+                visited[i] = true;
+                dfs(i, visited);
+            }
+        }
     }
 }
