@@ -32,55 +32,49 @@ public class Level25_1 {
     // 출력
     // 첫째 줄부터 N개의 줄에 정수를 한 개씩 출력한다. i번째 줄에는 정점 i의 방문 순서를 출력한다. 시작 정점의 방문 순서는 1이다. 시작
     // 정점에서 방문할 수 없는 경우 0을 출력한다.
-    private static BufferedReader br;
-    private static StringTokenizer st;
+    static int N, M, R, cnt = 1;
 
-    private static int N, M, R, cnt;
-    private static int[] order;
-    private static List<Integer>[] list;
+    static ArrayList<Integer> list[];
+    static int[] visited;
 
-    public static void main(String[] args) throws IOException {
-        br = new BufferedReader(new InputStreamReader(System.in));
-        st = new StringTokenizer(br.readLine());
+    public static void main(String[] args) throws Exception {
+        input();
+        DFS(R);
+        for (int i = 1; i <= N; i++) {
+            System.out.println(visited[i]);
+        }
+    }
 
+    private static void DFS(int start) {
+        visited[start] = cnt++;
+        for (Integer d : list[start]) {
+            if (visited[d] > 0)
+                continue;
+            DFS(d);
+        }
+    }
+
+    private static void input() throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
         R = Integer.parseInt(st.nextToken());
         list = new ArrayList[N + 1];
-        for (int i = 1; i <= N; i++)
+        visited = new int[N + 1];
+        for (int i = 1; i <= N; i++) {
             list[i] = new ArrayList<>();
-
+        }
         for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
-            int u = Integer.parseInt(st.nextToken());
-            int v = Integer.parseInt(st.nextToken());
-            list[u].add(v);
-            list[v].add(u);
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            list[a].add(b);
+            list[b].add(a);
         }
-        for (int i = 1; i <= N; i++)
-            Collections.sort(list[i]);
-
-        order = new int[N + 1];
-        order[R] = 1;
-        boolean[] visited = new boolean[N + 1];
-        visited[R] = true;
-        cnt = 1;
-        dfs(R, visited);
-        for (int i = 1; i <= N; i++)
-            System.out.println(order[i]);
-    }
-
-    private static void dfs(int x, boolean[] visited) {
-        if (list[x].size() == 0)
-            return;
-
-        for (int i : list[x]) {
-            if (!visited[i]) {
-                cnt++;
-                order[i] = cnt;
-                visited[i] = true;
-                dfs(i, visited);
-            }
+        for (int i = 1; i <= N; i++) {
+            list[i].sort(null);
         }
     }
+
 }
