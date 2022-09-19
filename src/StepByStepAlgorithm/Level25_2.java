@@ -1,5 +1,13 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.StringTokenizer;
+
 public class Level25_2 {
     // 24480 문제
     // 오늘도 서준이는 깊이 우선 탐색(DFS) 수업 조교를 하고 있다. 아빠가 수업한 내용을 학생들이 잘 이해했는지 문제를 통해서 확인해보자.
@@ -24,4 +32,48 @@ public class Level25_2 {
     // 출력
     // 첫째 줄부터 N개의 줄에 정수를 한 개씩 출력한다. i번째 줄에는 정점 i의 방문 순서를 출력한다. 시작 정점의 방문 순서는 1이다. 시작
     // 정점에서 방문할 수 없는 경우 0을 출력한다.
+    static int N, M, R, cnt = 1;
+
+    static ArrayList<Integer> list[];
+    static int[] visited;
+
+    public static void main(String[] args) throws Exception {
+        input();
+        DFS(R);
+        for (int i = 1; i <= N; i++) {
+            System.out.println(visited[i]);
+        }
+    }
+
+    private static void DFS(int start) {
+        visited[start] = cnt++;
+        for (Integer d : list[start]) {
+            if (visited[d] > 0)
+                continue;
+            DFS(d);
+        }
+    }
+
+    private static void input() throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        R = Integer.parseInt(st.nextToken());
+        list = new ArrayList[N + 1];
+        visited = new int[N + 1];
+        for (int i = 1; i <= N; i++) {
+            list[i] = new ArrayList<>();
+        }
+        for (int i = 0; i < M; i++) {
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            list[a].add(b);
+            list[b].add(a);
+        }
+        for (int i = 1; i <= N; i++) {
+            list[i].sort(Comparator.reverseOrder());
+        }
+    }
 }
