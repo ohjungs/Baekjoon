@@ -35,70 +35,59 @@ public class Level25_2 {
     // 출력
     // 첫째 줄부터 N개의 줄에 정수를 한 개씩 출력한다. i번째 줄에는 정점 i의 방문 순서를 출력한다. 시작 정점의 방문 순서는 1이다. 시작
     // 정점에서 방문할 수 없는 경우 0을 출력한다.
-    private static BufferedReader br;
-    private static StringTokenizer st;
-
-    private static int N, M, R;
-    private static List<Integer>[] list;
+    static StringBuilder sb = new StringBuilder();
+    static ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
+    static int[] check;
+    static int cnt;
 
     public static void main(String[] args) throws IOException {
-        br = new BufferedReader(new InputStreamReader(System.in));
-        st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-        R = Integer.parseInt(st.nextToken());
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
-        list = new ArrayList[N + 1];
-        for (int i = 1; i <= N; i++)
-            list[i] = new ArrayList<>();
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
+        int r = Integer.parseInt(st.nextToken());
 
-        for (int i = 0; i < M; i++) {
-            st = new StringTokenizer(br.readLine());
+        check = new int[n + 1];
+
+        for (int i = 0; i < n + 1; i++) {
+            graph.add(new ArrayList<Integer>());
+
+        }
+        while (m-- > 0) { // 간선 수 만큼 입력 받기
+            st = new StringTokenizer(br.readLine(), " ");
             int u = Integer.parseInt(st.nextToken());
             int v = Integer.parseInt(st.nextToken());
-            list[u].add(v);
-            list[v].add(u);
+
+            graph.get(u).add(v);
+            graph.get(v).add(u);
         }
-        for (int i = 1; i <= N; i++)
-            Collections.sort(list[i]);
-        bfs(R);
+
+        // 내림차순 정렬
+        for (int i = 1; i < graph.size(); i++) {
+            Collections.sort(graph.get(i), Collections.reverseOrder());
+        }
+
+        cnt = 1;
+        dfs(r);
+
+        for (int i = 1; i < check.length; i++) {
+            sb.append(check[i]).append("\n");
+        }
+
+        System.out.println(sb);
+
     }
 
-    private static void bfs(int x) {
-        Queue<Integer> queue = new LinkedList<>();
-        queue.add(x);
+    private static void dfs(int node) {
 
-        boolean[] visited = new boolean[N + 1];
-        visited[x] = true;
-
-        int cnt = 0;
-        int dep = 0;
-        long[] order = new long[N + 1];
-        long[] depth = new long[N + 1];
-        for (int i = 1; i <= N; i++)
-            depth[i] = -1;
-        while (!queue.isEmpty()) {
-            int size = queue.size();
-
-            while (size-- > 0) {
-                int q = queue.poll();
+        check[node] = cnt;
+        for (int i = 0; i < graph.get(node).size(); i++) {
+            int newNode = graph.get(node).get(i);
+            if (check[newNode] == 0) {
                 cnt++;
-                order[q] = cnt;
-                depth[q] = dep;
-
-                for (int i : list[q]) {
-                    if (!visited[i]) {
-                        visited[i] = true;
-                        queue.add(i);
-                    }
-                }
+                dfs(newNode);
             }
-            dep++;
         }
-        long sum = 0;
-        for (int i = 1; i <= N; i++) {
-            sum += depth[i] * order[i];
-        }
-        System.out.println(sum);
     }
 }
