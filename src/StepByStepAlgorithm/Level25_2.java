@@ -6,6 +6,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Level25_2 {
@@ -32,48 +35,70 @@ public class Level25_2 {
     // 출력
     // 첫째 줄부터 N개의 줄에 정수를 한 개씩 출력한다. i번째 줄에는 정점 i의 방문 순서를 출력한다. 시작 정점의 방문 순서는 1이다. 시작
     // 정점에서 방문할 수 없는 경우 0을 출력한다.
-    static int N, M, R, cnt = 1;
+    private static BufferedReader br;
+    private static StringTokenizer st;
 
-    static ArrayList<Integer> list[];
-    static int[] visited;
+    private static int N, M, R;
+    private static List<Integer>[] list;
 
-    public static void main(String[] args) throws Exception {
-        input();
-        DFS(R);
-        for (int i = 1; i <= N; i++) {
-            System.out.println(visited[i]);
-        }
-    }
-
-    private static void DFS(int start) {
-        visited[start] = cnt++;
-        for (Integer d : list[start]) {
-            if (visited[d] > 0)
-                continue;
-            DFS(d);
-        }
-    }
-
-    private static void input() throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
         R = Integer.parseInt(st.nextToken());
+
         list = new ArrayList[N + 1];
-        visited = new int[N + 1];
-        for (int i = 1; i <= N; i++) {
+        for (int i = 1; i <= N; i++)
             list[i] = new ArrayList<>();
-        }
+
         for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-            list[a].add(b);
-            list[b].add(a);
+            int u = Integer.parseInt(st.nextToken());
+            int v = Integer.parseInt(st.nextToken());
+            list[u].add(v);
+            list[v].add(u);
         }
+        for (int i = 1; i <= N; i++)
+            Collections.sort(list[i]);
+        bfs(R);
+    }
+
+    private static void bfs(int x) {
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(x);
+
+        boolean[] visited = new boolean[N + 1];
+        visited[x] = true;
+
+        int cnt = 0;
+        int dep = 0;
+        long[] order = new long[N + 1];
+        long[] depth = new long[N + 1];
+        for (int i = 1; i <= N; i++)
+            depth[i] = -1;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+
+            while (size-- > 0) {
+                int q = queue.poll();
+                cnt++;
+                order[q] = cnt;
+                depth[q] = dep;
+
+                for (int i : list[q]) {
+                    if (!visited[i]) {
+                        visited[i] = true;
+                        queue.add(i);
+                    }
+                }
+            }
+            dep++;
+        }
+        long sum = 0;
         for (int i = 1; i <= N; i++) {
-            list[i].sort(Comparator.reverseOrder());
+            sum += depth[i] * order[i];
         }
+        System.out.println(sum);
     }
 }
