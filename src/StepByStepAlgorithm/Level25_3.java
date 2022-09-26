@@ -43,60 +43,55 @@ public class Level25_3 {
     // 출력
     // 첫째 줄부터 N개의 줄에 정수를 한 개씩 출력한다. i번째 줄에는 정점 i의 방문 순서를 출력한다. 시작 정점의 방문 순서는 1이다. 시작
     // 정점에서 방문할 수 없는 경우 0을 출력한다.
-    static int N, M;
-    static List<List<Integer>> l = new ArrayList<>();
+    static int N, M, R, cnt = 1;
+
+    static ArrayList<Integer> list[];
+    static Queue<Integer> q;
     static int[] visited;
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-        int R = Integer.parseInt(st.nextToken());
-
-        visited = new int[N + 1];
-        for (int i = 0; i <= N; i++)
-            l.add(new ArrayList<>());
-
-        for (int i = 0; i < M; i++) {
-            st = new StringTokenizer(br.readLine());
-
-            int A = Integer.parseInt(st.nextToken());
-            int B = Integer.parseInt(st.nextToken());
-
-            l.get(A).add(B);
-            l.get(B).add(A);
-        }
-
-        for (int i = 1; i <= N; i++)
-            Collections.sort(l.get(i));
-
-        bfs(R);
-
-        for (int i = 1; i <= N; i++)
+    public static void main(String[] args) throws Exception {
+        input();
+        BFS(R);
+        for (int i = 1; i <= N; i++) {
             System.out.println(visited[i]);
+        }
     }
 
-    static void bfs(int start) {
-        Queue<Integer> q = new LinkedList<>();
-        int cnt = 1;
-
-        q.offer(start);
+    public static void BFS(int start) {
         visited[start] = cnt++;
-
+        q.add(start);
         while (!q.isEmpty()) {
-            int a = q.poll();
-
-            for (int i = 0; i < l.get(a).size(); i++) {
-                int nextV = l.get(a).get(i);
-
-                if (visited[nextV] != 0)
+            Integer a = q.poll();
+            for (Integer b : list[a]) {
+                if (visited[b] > 0)
                     continue;
-
-                q.offer(nextV);
-                visited[nextV] = cnt++;
+                q.add(b);
+                visited[b] = cnt++;
             }
+        }
+    }
+
+    private static void input() throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        R = Integer.parseInt(st.nextToken());
+        list = new ArrayList[N + 1];
+        q = new LinkedList<>();
+        visited = new int[N + 1];
+        for (int i = 1; i <= N; i++) {
+            list[i] = new ArrayList<>();
+        }
+        for (int i = 0; i < M; i++) {
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            list[a].add(b);
+            list[b].add(a);
+        }
+        for (int i = 1; i <= N; i++) {
+            list[i].sort(null);
         }
     }
 }
