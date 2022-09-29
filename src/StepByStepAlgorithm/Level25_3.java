@@ -44,57 +44,65 @@ public class Level25_3 {
     // 첫째 줄부터 N개의 줄에 정수를 한 개씩 출력한다. i번째 줄에는 정점 i의 방문 순서를 출력한다. 시작 정점의 방문 순서는 1이다. 시작
     // 정점에서 방문할 수 없는 경우 0을 출력한다.
 
-    private static BufferedReader br;
-    private static StringTokenizer st;
-
-    private static int N, M, R;
-    private static List<Integer>[] list;
+    static ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
+    static int check[];
+    static int cnt;
 
     public static void main(String[] args) throws IOException {
-        br = new BufferedReader(new InputStreamReader(System.in));
-        st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-        R = Integer.parseInt(st.nextToken());
-        list = new ArrayList[N + 1];
-        for (int i = 1; i <= N; i++)
-            list[i] = new ArrayList<>();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
-        for (int i = 0; i < M; i++) {
-            st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
+        int r = Integer.parseInt(st.nextToken());
+
+        check = new int[n + 1];
+
+        for (int i = 0; i < n + 1; i++) {
+            graph.add(new ArrayList<Integer>());
+        }
+
+        // 리스트에 노드와 연결된 노드번호들을 저장하기
+        while (m-- > 0) {
+            st = new StringTokenizer(br.readLine(), " ");
             int u = Integer.parseInt(st.nextToken());
             int v = Integer.parseInt(st.nextToken());
-            list[u].add(v);
-            list[v].add(u);
+
+            graph.get(u).add(v);
+            graph.get(v).add(u);
         }
-        for (int i = 1; i <= N; i++)
-            Collections.sort(list[i], Collections.reverseOrder());
-        bfs(R);
+
+        // 오름차순 정렬
+        for (int i = 1; i < graph.size(); i++) {
+            Collections.sort(graph.get(i));
+        }
+
+        cnt = 1;
+        bfs(r);
+
+        for (int i = 1; i < check.length; i++) {
+            sb.append(check[i]).append("\n");
+        }
+        System.out.println(sb);
+
     }
 
-    private static void bfs(int x) {
-        Queue<Integer> queue = new LinkedList<>();
-        queue.add(x);
+    private static void bfs(int node) {
+        check[node] = cnt;
+        LinkedList<Integer> q = new LinkedList<>();
+        q.offer(node);
 
-        boolean[] visited = new boolean[N + 1];
-        visited[x] = true;
-
-        int cnt = 0;
-        int[] order = new int[N + 1];
-        while (!queue.isEmpty()) {
-            int q = queue.poll();
-            cnt++;
-            order[q] = cnt;
-
-            for (int i : list[q]) {
-                if (!visited[i]) {
-                    visited[i] = true;
-                    queue.add(i);
+        while (!q.isEmpty()) {
+            int num = q.poll();
+            for (int i = 0; i < graph.get(num).size(); i++) {
+                int newNode = graph.get(num).get(i);
+                if (check[newNode] == 0) {
+                    cnt++;
+                    check[newNode] = cnt;
+                    q.offer(newNode);
                 }
             }
         }
-
-        for (int i = 1; i <= N; i++)
-            System.out.println(order[i]);
     }
 }
