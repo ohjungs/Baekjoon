@@ -24,38 +24,42 @@ public class Level25_4 {
     // 출력
     // 1번 컴퓨터가 웜 바이러스에 걸렸을 때, 1번 컴퓨터를 통해 웜 바이러스에 걸리게 되는 컴퓨터의 수를 첫째 줄에 출력한다.
 
-    static int map[][];
-    static boolean visit[];
-    static int n, m, v;
-    static int count = 0;
+    static int com_cnt, conn_cnt;
+    static int[][] computer;
+    static boolean[] check;
+    static int count;
 
-    public static int dfs(int i) {
-        visit[i] = true;
+    static void bfs(int x) {
+        Queue qu = new LinkedList();
+        qu.add(x);
 
-        for (int j = 1; j <= n; j++) {
-            if (map[i][j] == 1 && visit[j] == false) {
-                count++;
-                dfs(j);
+        while (!qu.isEmpty()) {
+            x = (int) qu.poll();
+            check[x] = true;
+            for (int i = 1; i < com_cnt + 1; i++) {
+                if (!check[i] && computer[x][i] == 1) {
+                    check[i] = true;
+                    qu.add(i);
+                    count++;
+                }
             }
         }
-        return count;
     }
 
     public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
-        n = scan.nextInt(); // 컴퓨터 수(정점)
-        m = scan.nextInt(); // 연결된 컴퓨터 쌍의 수(간선)
-        v = 1; // 탐색 시장할 정점의 번호
-        map = new int[n + 1][n + 1]; // 각 정점간 탐색 경로를 저장할 배열
-        visit = new boolean[n + 1]; // 정점의 탐색 여부 체크
+        Scanner sc = new Scanner(System.in);
+        com_cnt = sc.nextInt();
+        conn_cnt = sc.nextInt();
 
-        for (int i = 0; i < m; i++) {
-            int a = scan.nextInt();
-            int b = scan.nextInt();
-            map[a][b] = map[b][a] = 1;
+        computer = new int[com_cnt + 1][com_cnt + 1];
+        check = new boolean[com_cnt + 1];
+
+        for (int i = 0; i < conn_cnt; i++) {
+            int a1 = sc.nextInt();
+            int a2 = sc.nextInt();
+            computer[a1][a2] = computer[a2][a1] = 1;
         }
-
-        System.out.println(dfs(1));
-        scan.close();
+        bfs(1);
+        System.out.println(count);
     }
 }
