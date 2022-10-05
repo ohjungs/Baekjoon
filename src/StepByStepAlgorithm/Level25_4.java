@@ -1,8 +1,12 @@
 package StepByStepAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Level25_4 {
     // 2606 문제
@@ -24,42 +28,37 @@ public class Level25_4 {
     // 출력
     // 1번 컴퓨터가 웜 바이러스에 걸렸을 때, 1번 컴퓨터를 통해 웜 바이러스에 걸리게 되는 컴퓨터의 수를 첫째 줄에 출력한다.
 
-    static int com_cnt, conn_cnt;
-    static int[][] computer;
-    static boolean[] check;
-    static int count;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-    static void bfs(int x) {
-        Queue qu = new LinkedList();
-        qu.add(x);
+        int n = Integer.parseInt(br.readLine());
+        int m = Integer.parseInt(br.readLine());
 
-        while (!qu.isEmpty()) {
-            x = (int) qu.poll();
-            check[x] = true;
-            for (int i = 1; i < com_cnt + 1; i++) {
-                if (!check[i] && computer[x][i] == 1) {
-                    check[i] = true;
-                    qu.add(i);
+        int[][] arr = new int[n + 1][n + 1];
+        for (int i = 0; i < m; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            arr[a][b] = arr[b][a] = 1;
+        }
+
+        Queue<Integer> q = new LinkedList<>();
+        boolean[] visit = new boolean[n + 1];
+
+        q.add(1);
+        visit[1] = true;
+
+        int count = 0;
+        while (!q.isEmpty()) {
+            int v = q.poll();
+            for (int i = 1; i <= n; i++) {
+                if (arr[v][i] == 1 && !visit[i]) {
+                    visit[i] = true;
+                    q.add(i);
                     count++;
                 }
             }
         }
-    }
-
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        com_cnt = sc.nextInt();
-        conn_cnt = sc.nextInt();
-
-        computer = new int[com_cnt + 1][com_cnt + 1];
-        check = new boolean[com_cnt + 1];
-
-        for (int i = 0; i < conn_cnt; i++) {
-            int a1 = sc.nextInt();
-            int a2 = sc.nextInt();
-            computer[a1][a2] = computer[a2][a1] = 1;
-        }
-        bfs(1);
         System.out.println(count);
     }
 }
