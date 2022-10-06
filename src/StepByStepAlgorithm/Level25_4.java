@@ -28,37 +28,53 @@ public class Level25_4 {
     // 출력
     // 1번 컴퓨터가 웜 바이러스에 걸렸을 때, 1번 컴퓨터를 통해 웜 바이러스에 걸리게 되는 컴퓨터의 수를 첫째 줄에 출력한다.
 
-    public static void main(String[] args) throws IOException {
+    static int V, E;
+    static int[][] arr;
+    static Queue<Integer> q = new LinkedList<>();
+    static boolean[] visited;
+
+    public static void main(String[] args) throws NumberFormatException, IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        int n = Integer.parseInt(br.readLine());
-        int m = Integer.parseInt(br.readLine());
-
-        int[][] arr = new int[n + 1][n + 1];
-        for (int i = 0; i < m; i++) {
+        V = Integer.parseInt(br.readLine());
+        E = Integer.parseInt(br.readLine());
+        arr = new int[V + 1][V + 1];
+        visited = new boolean[V + 1];
+        for (int i = 0; i < E; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-            arr[a][b] = arr[b][a] = 1;
+            int s = Integer.parseInt(st.nextToken());
+            int e = Integer.parseInt(st.nextToken());
+            arr[e][s] = arr[s][e] = 1;
         }
+        q.offer(1);
 
-        Queue<Integer> q = new LinkedList<>();
-        boolean[] visit = new boolean[n + 1];
+        bfs();
 
-        q.add(1);
-        visit[1] = true;
+        int result = 0;
+        // 1번 컴퓨터를 제외하고 연결된 컴퓨터의 개수 구하기
+        for (int i = 2; i <= V; i++) {
+            if (visited[i])
+                result++;
+        }
+        System.out.println(result);
 
-        int count = 0;
+    }
+
+    private static void bfs() {
+        visited[1] = true;
         while (!q.isEmpty()) {
-            int v = q.poll();
-            for (int i = 1; i <= n; i++) {
-                if (arr[v][i] == 1 && !visit[i]) {
-                    visit[i] = true;
-                    q.add(i);
-                    count++;
+            int s = q.poll();
+
+            for (int i = 1; i <= V; i++) {
+                // 연결되어 있다면 큐에 넣기
+                if (arr[s][i] == 1 && visited[i] == false) {
+
+                    q.offer(i);
+                    visited[i] = true;
+
                 }
             }
+
         }
-        System.out.println(count);
+
     }
 }
