@@ -21,73 +21,61 @@ public class Level25_5 {
     // 출력
     // 첫째 줄에 DFS를 수행한 결과를, 그 다음 줄에는 BFS를 수행한 결과를 출력한다. V부터 방문된 점을 순서대로 출력하면 된다.
 
-    static StringBuilder sb = new StringBuilder();
-    static boolean[] check;
-    static int[][] arr;
-
-    static int node, line, start;
-
-    static Queue<Integer> q = new LinkedList<>();
+    // DFS에 쓰일 이차원 배열
+    static int[][] Dgraph = new int[1001][1001];
+    // BFS에 쓰일 이차원 배열
+    static int[][] Bgraph = new int[1001][1001];
+    static boolean[] Dvisit = new boolean[10001];
+    // N은 DFS, BFS 메소드에도 사용되어야 하기 때문에 필드로 선언
+    static int N;
 
     public static void main(String[] args) throws IOException {
-
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
         StringTokenizer st = new StringTokenizer(br.readLine());
-        node = Integer.parseInt(st.nextToken());
-        line = Integer.parseInt(st.nextToken());
-        start = Integer.parseInt(st.nextToken());
+        N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+        int V = Integer.parseInt(st.nextToken());
 
-        arr = new int[node + 1][node + 1];
-        check = new boolean[node + 1];
-
-        for (int i = 0; i < line; i++) {
-            StringTokenizer str = new StringTokenizer(br.readLine());
-
-            int a = Integer.parseInt(str.nextToken());
-            int b = Integer.parseInt(str.nextToken());
-
-            arr[a][b] = arr[b][a] = 1;
+        // 간선을 두개의 그래프 배열에 똑같이 저장해 준다.
+        for (int i = 0; i < M; i++) {
+            st = new StringTokenizer(br.readLine());
+            int u = Integer.parseInt(st.nextToken());
+            int v = Integer.parseInt(st.nextToken());
+            Dgraph[u][v] = Dgraph[v][u] = 1;
+            Bgraph[u][v] = Bgraph[v][u] = 1;
         }
-        // sb.append("\n");
-        dfs(start);
-        sb.append("\n");
-        check = new boolean[node + 1];
-
-        bfs(start);
-
-        System.out.println(sb);
-
+        DFS(V);
+        System.out.println();
+        BFS(V);
     }
 
-    public static void dfs(int start) {
+    public static void DFS(int node) {
+        Dvisit[node] = true;
+        System.out.print(node + " ");
 
-        check[start] = true;
-        sb.append(start + " ");
-
-        for (int i = 0; i <= node; i++) {
-            if (arr[start][i] == 1 && !check[i])
-                dfs(i);
+        for (int i = 1; i <= N; i++) {
+            if (!Dvisit[i] && Dgraph[node][i] == 1) {
+                DFS(i);
+            }
         }
-
     }
 
-    public static void bfs(int start) {
-        q.add(start);
-        check[start] = true;
+    public static void BFS(int node) {
+        boolean[] Bvisit = new boolean[10001];
+        Queue<Integer> que = new LinkedList<Integer>();
+        Bvisit[node] = true;
+        que.offer(node);
 
-        while (!q.isEmpty()) {
+        while (!que.isEmpty()) {
+            int P = que.poll();
+            System.out.print(P + " ");
 
-            start = q.poll();
-            sb.append(start + " ");
-
-            for (int i = 1; i <= node; i++) {
-                if (arr[start][i] == 1 && !check[i]) {
-                    q.add(i);
-                    check[i] = true;
+            for (int i = 1; i <= N; i++) {
+                if (!Bvisit[i] && Bgraph[P][i] == 1) {
+                    Bvisit[i] = true;
+                    que.offer(i);
                 }
             }
         }
-
     }
 }
