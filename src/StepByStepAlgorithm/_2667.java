@@ -19,74 +19,74 @@ public class _2667 {
     // 대각선상에 집이 있는 경우는 연결된 것이 아니다.
     // <그림 2>는 <그림 1>을 단지별로 번호를 붙인 것이다.
     // 지도를 입력하여 단지수를 출력하고, 각 단지에 속하는 집의 수를 오름차순으로 정렬하여 출력하는 프로그램을 작성하시오.
-    static int arr[][];
-    static boolean visit[][];
-    static int dirX[] = { 0, 0, -1, 1 };
-    static int dirY[] = { -1, 1, 0, 0 };
+    static int N; // 지도의 크기
+    static int[][] Map; // 2차원 배열 지도
+    static int count; // 단지집의 숫자
+    static int[] dr = { -1, 1, 0, 0 }; // 상하좌우
+    static int[] dc = { 0, 0, -1, 1 }; // 상하좌우
 
-    static int count = 0, number = 0;
-    static int nowX, nowY, N;
+    static ArrayList<Integer> result; // 단지 집의 수 저장 result.size()는 단지 수가 된다.
 
-    public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        List<Integer> list = new ArrayList<>();
+    static boolean[][] check; // 방문 체크
 
-        N = Integer.parseInt(br.readLine());
-        arr = new int[N][N];
-        visit = new boolean[N][N];
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        N = sc.nextInt(); // 지도의 크기
 
+        // 2차원 배열 지도
+        Map = new int[N][N];
+
+        // 방문 체크
+        check = new boolean[N][N];
+
+        // 지도 배열 값 입력
         for (int i = 0; i < N; i++) {
-            String str = br.readLine();
-
+            String input = sc.next();
             for (int j = 0; j < N; j++) {
-                arr[i][j] = Character.getNumericValue(str.charAt(j));
+                Map[i][j] = input.charAt(j) - '0';
             }
         }
 
+        // 단지집의 숫자
+        count = 0;
+
+        // 단지 집의 수 결과 저장
+        result = new ArrayList<>();
+
+        // 지도 전체 탐색
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-
-                if (visit[i][j] == false && arr[i][j] == 1) {
-                    count = 0;
-                    number++;
-                    DFS(i, j);
-                    list.add(count);
+                // 현재 위치의 값이 1이고 true라면
+                if (Map[i][j] == 1 && !check[i][j]) {
+                    // 맨 처음이기 때문에 count 1 증가
+                    count = 1;
+                    Search(i, j);
+                    result.add(count);
                 }
-
             }
         }
 
-        Collections.sort(list);
-        bw.append(number + "\n");
-        for (int num : list) {
-            bw.append(num + "\n");
-        }
+        Collections.sort(result);
+        System.out.println(result.size());
+        for (int c : result)
+            System.out.println(c);
+    }
 
-        bw.flush();
-        bw.close();
-    } // End of main
-
-    static void DFS(int x, int y) {
-        visit[x][y] = true;
-        arr[x][y] = number;
-        count++;
-
-        for (int i = 0; i < 4; i++) {
-            nowX = dirX[i] + x;
-            nowY = dirY[i] + y;
-
-            if (Range_check() && visit[nowX][nowY] == false && arr[nowX][nowY] == 1) {
-                visit[nowX][nowY] = true;
-                arr[nowX][nowY] = number;
-
-                DFS(nowX, nowY);
-            }
-        }
-
-    } // End of DFS
-
-    static boolean Range_check() {
-        return (nowX >= 0 && nowX < N && nowY >= 0 && nowY < N);
-    } // End of Range_check
-} // End of class
+    public static int Search(int x, int y) {
+		check[x][y] = true;
+		
+		//4방향 확인
+		for(int i=0;i<4;i++) {
+			int nx = x + dr[i];
+			int ny = y + dc[i];
+			
+			if(nx>=0 && ny>=0 && nx<N && ny<N) {
+				if(Map[nx][ny]==1 && !check[nx][ny]) {
+					Search(nx,ny);
+					count++;
+				}
+			}
+		}
+		
+		return count;
+	}
