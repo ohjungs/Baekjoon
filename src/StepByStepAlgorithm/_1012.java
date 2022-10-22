@@ -32,70 +32,70 @@ public class _1012 {
 
     // 출력
     // 각 테스트 케이스에 대해 필요한 최소의 배추흰지렁이 마리 수를 출력한다.
+    static int dirX[] = { 0, 0, -1, 1 };
+    static int dirY[] = { -1, 1, 0, 0 };
+    static int map[][];
+    static boolean visit[][];
+
+    static int now_x, now_y;
     static int M, N, K;
-    static int[][] cabbage;
-    static boolean[][] visit;
     static int count;
-    static int[] dx = { 0, -1, 0, 1 };
-    static int[] dy = { 1, 0, -1, 0 };
 
-    static void bfs(int x, int y) {
-        Queue<int[]> qu = new LinkedList<int[]>();
-        qu.add(new int[] { x, y });
-
-        while (!qu.isEmpty()) {
-            x = qu.peek()[0];
-            y = qu.peek()[1];
-            visit[x][y] = true;
-            qu.poll();
-            for (int i = 0; i < 4; i++) {
-                int cx = x + dx[i];
-                int cy = y + dy[i];
-
-                if (cx >= 0 && cy >= 0 && cx < M && cy < N) {
-                    if (!visit[cx][cy] && cabbage[cx][cy] == 1) {
-                        qu.add(new int[] { cx, cy });
-                        visit[cx][cy] = true;
-                    }
-                }
-
-            }
-
-        }
-    }
-
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+        StringBuilder sb = new StringBuilder();
 
         int T = Integer.parseInt(br.readLine());
+        for (int i = 0; i < T; i++) {
+            st = new StringTokenizer(br.readLine());
 
-        for (int c = 0; c < T; c++) {
-            StringTokenizer st = new StringTokenizer(br.readLine(), " ");
             M = Integer.parseInt(st.nextToken());
             N = Integer.parseInt(st.nextToken());
             K = Integer.parseInt(st.nextToken());
-            cabbage = new int[M][N];
-            visit = new boolean[M][N];
-            count = 0;
 
-            for (int i = 0; i < K; i++) {
-                st = new StringTokenizer(br.readLine(), " ");
-                int p1 = Integer.parseInt(st.nextToken());
-                int p2 = Integer.parseInt(st.nextToken());
-                cabbage[p1][p2] = 1;
+            map = new int[N][M];
+            visit = new boolean[N][M];
 
+            for (int j = 0; j < K; j++) {
+                st = new StringTokenizer(br.readLine());
+                int x = Integer.parseInt(st.nextToken());
+                int y = Integer.parseInt(st.nextToken());
+                map[y][x] = 1;
             }
 
-            for (int i = 0; i < M; i++) {
-                for (int j = 0; j < N; j++) {
-                    if (cabbage[i][j] == 1 && !visit[i][j]) {
-                        bfs(i, j);
+            count = 0;
+            for (int j = 0; j < N; j++) {
+                for (int k = 0; k < M; k++) {
+
+                    if (map[j][k] == 1 && visit[j][k] == false) {
                         count++;
+                        DFS(k, j);
                     }
                 }
             }
-            System.out.println(count);
+            sb.append(count).append('\n');
         }
 
+        System.out.println(sb);
+    } // End Main
+
+    public static void DFS(int x, int y) {
+        visit[y][x] = true;
+
+        for (int i = 0; i < 4; i++) {
+            now_x = x + dirX[i];
+            now_y = y + dirY[i];
+
+            if (Range_check() && visit[now_y][now_x] == false && map[now_y][now_x] == 1) {
+                DFS(now_x, now_y);
+            }
+
+        }
     }
-}
+
+    static boolean Range_check() {
+        return (now_y < N && now_y >= 0 && now_x < M && now_x >= 0);
+    }
+
+} // End Class
