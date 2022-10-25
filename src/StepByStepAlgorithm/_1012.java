@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 import java.util.StringTokenizer;
 
 public class _1012 {
@@ -32,14 +33,25 @@ public class _1012 {
 
     // 출력
     // 각 테스트 케이스에 대해 필요한 최소의 배추흰지렁이 마리 수를 출력한다.
+    static Queue<Node> que = new LinkedList<>();
     static int dirX[] = { 0, 0, -1, 1 };
     static int dirY[] = { -1, 1, 0, 0 };
     static int map[][];
     static boolean visit[][];
 
     static int now_x, now_y;
-    static int M, N, K;
+    static int N, M, K;
     static int count;
+
+    static class Node {
+        int x;
+        int y;
+
+        public Node(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -47,6 +59,7 @@ public class _1012 {
         StringBuilder sb = new StringBuilder();
 
         int T = Integer.parseInt(br.readLine());
+
         for (int i = 0; i < T; i++) {
             st = new StringTokenizer(br.readLine());
 
@@ -68,34 +81,40 @@ public class _1012 {
             for (int j = 0; j < N; j++) {
                 for (int k = 0; k < M; k++) {
 
-                    if (map[j][k] == 1 && visit[j][k] == false) {
+                    if (visit[j][k] == false && map[j][k] == 1) {
                         count++;
-                        DFS(k, j);
+                        BFS(k, j);
                     }
                 }
             }
+
             sb.append(count).append('\n');
         }
 
         System.out.println(sb);
-    } // End Main
+    }
 
-    public static void DFS(int x, int y) {
+    static void BFS(int x, int y) {
+        que.offer(new Node(x, y));
         visit[y][x] = true;
 
-        for (int i = 0; i < 4; i++) {
-            now_x = x + dirX[i];
-            now_y = y + dirY[i];
+        while (!que.isEmpty()) {
+            Node node = que.poll();
 
-            if (Range_check() && visit[now_y][now_x] == false && map[now_y][now_x] == 1) {
-                DFS(now_x, now_y);
+            for (int i = 0; i < 4; i++) {
+                now_x = node.x + dirX[i];
+                now_y = node.y + dirY[i];
+
+                if (Range_check() && visit[now_y][now_x] == false && map[now_y][now_x] == 1) {
+                    que.offer(new Node(now_x, now_y));
+                    visit[now_y][now_x] = true;
+                }
+
             }
-
         }
     }
 
-    static boolean Range_check() {
-        return (now_y < N && now_y >= 0 && now_x < M && now_x >= 0);
+    public static boolean Range_check() {
+        return (now_x >= 0 && now_x < M && now_y >= 0 && now_y < N);
     }
-
-} // End Class
+}
