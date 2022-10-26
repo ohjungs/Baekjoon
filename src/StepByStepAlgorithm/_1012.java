@@ -33,88 +33,84 @@ public class _1012 {
 
     // 출력
     // 각 테스트 케이스에 대해 필요한 최소의 배추흰지렁이 마리 수를 출력한다.
-    static Queue<Node> que = new LinkedList<>();
-    static int dirX[] = { 0, 0, -1, 1 };
-    static int dirY[] = { -1, 1, 0, 0 };
-    static int map[][];
-    static boolean visit[][];
+    static int M;
+    static int N;
+    static int K;
+    static int arr[][];
 
-    static int now_x, now_y;
-    static int N, M, K;
-    static int count;
+    static int visited[][];
 
-    static class Node {
-        int x;
-        int y;
-
-        public Node(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
+    static int list[] = new int[2601];
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
-        StringBuilder sb = new StringBuilder();
 
-        int T = Integer.parseInt(br.readLine());
+        int T = Integer.valueOf(br.readLine());
+        for (int tc = 1; tc <= T; tc++) {
+            int ANSWER = 0;
 
-        for (int i = 0; i < T; i++) {
-            st = new StringTokenizer(br.readLine());
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            M = Integer.valueOf(st.nextToken());
+            N = Integer.valueOf(st.nextToken());
+            K = Integer.valueOf(st.nextToken());
 
-            M = Integer.parseInt(st.nextToken());
-            N = Integer.parseInt(st.nextToken());
-            K = Integer.parseInt(st.nextToken());
+            arr = new int[N][M];
+            visited = new int[N][M];
 
-            map = new int[N][M];
-            visit = new boolean[N][M];
-
-            for (int j = 0; j < K; j++) {
+            for (int i = 1; i <= K; i++) {
                 st = new StringTokenizer(br.readLine());
-                int x = Integer.parseInt(st.nextToken());
-                int y = Integer.parseInt(st.nextToken());
-                map[y][x] = 1;
+                int x = Integer.valueOf(st.nextToken());
+                int y = Integer.valueOf(st.nextToken());
+
+                arr[y][x] = 1;
             }
 
-            count = 0;
-            for (int j = 0; j < N; j++) {
-                for (int k = 0; k < M; k++) {
-
-                    if (visit[j][k] == false && map[j][k] == 1) {
-                        count++;
-                        BFS(k, j);
+            for (int i = 0; i < N; i++) {
+                for (int j = 0; j < M; j++) {
+                    if (visited[i][j] == 0 && arr[i][j] == 1) {
+                        ANSWER++;
+                        bfs(i, j);
                     }
                 }
             }
 
-            sb.append(count).append('\n');
-        }
+            System.out.println(ANSWER);
 
-        System.out.println(sb);
+            // for (int i = 0; i < N; i++)
+            // {
+            // System.out.println(Arrays.toString(visited[i]));
+            // }
+        }
     }
 
-    static void BFS(int x, int y) {
-        que.offer(new Node(x, y));
-        visit[y][x] = true;
+    private static void bfs(int i, int j) {
+        Queue<Integer> q = new LinkedList<Integer>();
 
-        while (!que.isEmpty()) {
-            Node node = que.poll();
+        q.offer(i * 100 + j);
+        visited[i][j] = 1;
 
-            for (int i = 0; i < 4; i++) {
-                now_x = node.x + dirX[i];
-                now_y = node.y + dirY[i];
+        int pos = 0;
+        while (q.isEmpty() == false) {
+            pos = q.poll();
+            i = pos / 100;
+            j = pos % 100;
 
-                if (Range_check() && visit[now_y][now_x] == false && map[now_y][now_x] == 1) {
-                    que.offer(new Node(now_x, now_y));
-                    visit[now_y][now_x] = true;
-                }
-
+            if (i > 0 && arr[i - 1][j] == 1 && visited[i - 1][j] == 0) {
+                visited[i - 1][j] = 1;
+                q.offer((i - 1) * 100 + j); // 상
+            }
+            if (i < N - 1 && arr[i + 1][j] == 1 && visited[i + 1][j] == 0) {
+                visited[i + 1][j] = 1;
+                q.offer((i + 1) * 100 + j); // 하
+            }
+            if (j > 0 && arr[i][j - 1] == 1 && visited[i][j - 1] == 0) {
+                visited[i][j - 1] = 1;
+                q.offer(i * 100 + (j - 1)); // 좌
+            }
+            if (j < M - 1 && arr[i][j + 1] == 1 && visited[i][j + 1] == 0) {
+                visited[i][j + 1] = 1;
+                q.offer(i * 100 + (j + 1)); // 우
             }
         }
-    }
-
-    public static boolean Range_check() {
-        return (now_x >= 0 && now_x < M && now_y >= 0 && now_y < N);
     }
 }
