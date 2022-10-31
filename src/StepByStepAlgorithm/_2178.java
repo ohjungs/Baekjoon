@@ -27,62 +27,80 @@ public class _2178 {
     // 출력
     // 첫째 줄에 지나야 하는 최소의 칸 수를 출력한다. 항상 도착위치로 이동할 수 있는 경우만 입력으로 주어진다.
 
-    static int[][] map;
-    static int n;
-    static int m;
-    static int minVal;
-    static boolean[][] visited;
+    public static void main(String args[]) throws IOException {
+        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(bf.readLine());
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+        char[][] miro = new char[N][M]; // 미로를 저장할 배열
+        int[][] dist = new int[N][M]; // 거리를 계산할 dist 배열
+        int[] dx = { 1, 0, -1, 0 }; // 상하좌우 계산할 x좌표
+        int[] dy = { 0, 1, 0, -1 }; // 상하좌우 계산할 y좌표
+        Queue<Pair> qu = new LinkedList<>();
 
-        map = new int[n][m];
-        for (int i = 0; i < n; i++) {
-            String s = br.readLine();
-            for (int j = 0; j < m; j++) {
-                map[i][j] = s.charAt(j) - '0';
+        for (int i = 0; i < N; i++) {
+            String line = bf.readLine();
+            for (int j = 0; j < M; j++) {
+                miro[i][j] = line.charAt(j);
+                dist[i][j] = -1; // 거리를 -1로 세팅하면, 방문여부를 확인가능.
             }
         }
 
-        visited = new boolean[n][m];
-        visited[0][0] = true;
-        minVal = Integer.MAX_VALUE;
-        dfs(0, 0, 1);
-        System.out.println(minVal);
+        qu.offer(new Pair(0, 0)); // 시작점
+        dist[0][0] = 0; // 첫 시작이니까 거리가 0이다.
+
+        while (!qu.isEmpty()) {
+            Pair p = qu.poll();
+
+            // 상, 하, 좌, 우를 계산해준다.
+            for (int i = 0; i < 4; i++) {
+                int nX = p.x + dx[i];
+                int nY = p.y + dy[i];
+
+                // 벽에 부딪히거나, 범위를 넘어가면 PASS
+                if (nX < 0 || nX >= N || nY < 0 || nY >= M) {
+                    continue;
+                }
+                // 길이 아니거나, 방문을 했다면 PASS
+                if (miro[nX][nY] == '0' || dist[nX][nY] != -1) {
+                    continue;
+                }
+
+                // 큐에 이동한 좌표를 넣어준다.
+                qu.offer(new Pair(nX, nY));
+                // 한칸 이동하였기 때문에, 이전 출발지점의 거리 +1을 해준다.
+                dist[nX][nY] = dist[p.x][p.y] + 1;
+            }
+        }
+
+        // 마지막 지점의 (거리 + 1)를 출력해주면 된다.
+        System.out.print(dist[N - 1][M - 1] + 1);
     }
 
-    public static void dfs(int x, int y, int count) {
-        if (x == n - 1 && y == m - 1) {
-            minVal = Math.min(minVal, count);
-            return;
+    // 큐에 좌표를 넣어주기 위한 클래스
+    public static class Pair {
+        int x, y;
+
+        public Pair(int x, int y) {
+            this.x = x;
+            this.y = y;
         }
 
-        if (count > minVal)
-            return; // 가지치기 - 이미 count가 minVal보다 커졌다면 return;
+        public int getX() {
+            return x;
+        }
 
-        // 방향배열 사용하지 않고 조건문으로 4가지를 나누어 보았다.
-        if (x > 0 && !visited[x - 1][y] && map[x - 1][y] == 1) { // 상
-            visited[x - 1][y] = true;
-            dfs(x - 1, y, count + 1);
-            visited[x - 1][y] = false;
+        public int getY() {
+            return y;
         }
-        if (x < n - 1 && !visited[x + 1][y] && map[x + 1][y] == 1) { // 하
-            visited[x + 1][y] = true;
-            dfs(x + 1, y, count + 1);
-            visited[x + 1][y] = false;
+
+        public void setX(int x) {
+            this.x = x;
         }
-        if (y > 0 && !visited[x][y - 1] && map[x][y - 1] == 1) { // 좌
-            visited[x][y - 1] = true;
-            dfs(x, y - 1, count + 1);
-            visited[x][y - 1] = false;
-        }
-        if (y < m - 1 && !visited[x][y + 1] && map[x][y + 1] == 1) { // 우
-            visited[x][y + 1] = true;
-            dfs(x, y + 1, count + 1);
-            visited[x][y + 1] = false;
+
+        public void setY(int y) {
+            this.y = y;
         }
     }
 }
