@@ -27,80 +27,74 @@ public class _2178 {
     // 출력
     // 첫째 줄에 지나야 하는 최소의 칸 수를 출력한다. 항상 도착위치로 이동할 수 있는 경우만 입력으로 주어진다.
 
-    public static void main(String args[]) throws IOException {
-        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(bf.readLine());
+    static boolean visit[][];
+    static int maze[][];
+    static int dirY[] = { -1, 1, 0, 0 };
+    static int dirX[] = { 0, 0, -1, 1 };
+    static Queue<Node> que = new LinkedList<>();
 
-        int N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
-        char[][] miro = new char[N][M]; // 미로를 저장할 배열
-        int[][] dist = new int[N][M]; // 거리를 계산할 dist 배열
-        int[] dx = { 1, 0, -1, 0 }; // 상하좌우 계산할 x좌표
-        int[] dy = { 0, 1, 0, -1 }; // 상하좌우 계산할 y좌표
-        Queue<Pair> qu = new LinkedList<>();
+    static int now_x, now_y;
+    static int x, y;
+    static int N, M;
 
-        for (int i = 0; i < N; i++) {
-            String line = bf.readLine();
-            for (int j = 0; j < M; j++) {
-                miro[i][j] = line.charAt(j);
-                dist[i][j] = -1; // 거리를 -1로 세팅하면, 방문여부를 확인가능.
-            }
+    static class Node {
+        int x;
+        int y;
+
+        public Node(int x, int y) {
+            this.x = x;
+            this.y = y;
         }
-
-        qu.offer(new Pair(0, 0)); // 시작점
-        dist[0][0] = 0; // 첫 시작이니까 거리가 0이다.
-
-        while (!qu.isEmpty()) {
-            Pair p = qu.poll();
-
-            // 상, 하, 좌, 우를 계산해준다.
-            for (int i = 0; i < 4; i++) {
-                int nX = p.x + dx[i];
-                int nY = p.y + dy[i];
-
-                // 벽에 부딪히거나, 범위를 넘어가면 PASS
-                if (nX < 0 || nX >= N || nY < 0 || nY >= M) {
-                    continue;
-                }
-                // 길이 아니거나, 방문을 했다면 PASS
-                if (miro[nX][nY] == '0' || dist[nX][nY] != -1) {
-                    continue;
-                }
-
-                // 큐에 이동한 좌표를 넣어준다.
-                qu.offer(new Pair(nX, nY));
-                // 한칸 이동하였기 때문에, 이전 출발지점의 거리 +1을 해준다.
-                dist[nX][nY] = dist[p.x][p.y] + 1;
-            }
-        }
-
-        // 마지막 지점의 (거리 + 1)를 출력해주면 된다.
-        System.out.print(dist[N - 1][M - 1] + 1);
     }
 
-    // 큐에 좌표를 넣어주기 위한 클래스
-    public static class Pair {
-        int x, y;
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        public Pair(int x, int y) {
-            this.x = x;
-            this.y = y;
+        N = Integer.parseInt(st.nextToken()); // 세로
+        M = Integer.parseInt(st.nextToken()); // 가로
+
+        visit = new boolean[N][M];
+        maze = new int[N][M];
+
+        for (int i = 0; i < N; i++) {
+            String str = br.readLine();
+            for (int j = 0; j < M; j++) {
+                char ch = str.charAt(j);
+                maze[i][j] = Character.getNumericValue(ch);
+            }
         }
 
-        public int getX() {
-            return x;
-        }
+        BFS(0, 0);
+        System.out.println(maze[N - 1][M - 1]);
+    }
 
-        public int getY() {
-            return y;
-        }
+    static void BFS(int x, int y) {
+        que.offer(new Node(x, y));
+        visit[y][x] = true;
 
-        public void setX(int x) {
-            this.x = x;
-        }
+        while (!que.isEmpty()) {
+            Node node = que.poll();
 
-        public void setY(int y) {
-            this.y = y;
+            for (int i = 0; i < 4; i++) {
+                now_y = node.y + dirY[i];
+                now_x = node.x + dirX[i];
+
+                if (Range_check() == true && visit[now_y][now_x] == false && maze[now_y][now_x] == 1) {
+                    que.offer(new Node(now_x, now_y));
+                    visit[now_y][now_x] = true;
+
+                    maze[now_y][now_x] = maze[node.y][node.x] + 1;
+                    if (visit[N - 1][M - 1] == true) {
+                        return;
+                    }
+
+                }
+            }
         }
+    }
+
+    public static boolean Range_check() {
+        return (now_x >= 0 && now_x < M && now_y >= 0 && now_y < N);
     }
 }
