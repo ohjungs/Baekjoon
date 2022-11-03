@@ -1,8 +1,10 @@
 package StepByStepAlgorithm;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
@@ -27,74 +29,60 @@ public class _2178 {
     // 출력
     // 첫째 줄에 지나야 하는 최소의 칸 수를 출력한다. 항상 도착위치로 이동할 수 있는 경우만 입력으로 주어진다.
 
-    static boolean visit[][];
-    static int maze[][];
-    static int dirY[] = { -1, 1, 0, 0 };
-    static int dirX[] = { 0, 0, -1, 1 };
-    static Queue<Node> que = new LinkedList<>();
+    static int n, m;
+    static int[][] graph;
+    static boolean[][] visited;
 
-    static int now_x, now_y;
-    static int x, y;
-    static int N, M;
-
-    static class Node {
-        int x;
-        int y;
-
-        public Node(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
-
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        String[] nm = br.readLine().split(" ");
+        n = Integer.parseInt(nm[0]);
+        m = Integer.parseInt(nm[1]);
 
-        N = Integer.parseInt(st.nextToken()); // 세로
-        M = Integer.parseInt(st.nextToken()); // 가로
+        graph = new int[n + 1][m + 1];
+        visited = new boolean[n + 1][m + 1];
 
-        visit = new boolean[N][M];
-        maze = new int[N][M];
-
-        for (int i = 0; i < N; i++) {
-            String str = br.readLine();
-            for (int j = 0; j < M; j++) {
-                char ch = str.charAt(j);
-                maze[i][j] = Character.getNumericValue(ch);
+        for (int i = 1; i <= n; i++) {
+            String[] line = br.readLine().split("");
+            for (int j = 1; j <= m; j++) {
+                graph[i][j] = Integer.parseInt(line[j - 1]);
             }
         }
 
-        BFS(0, 0);
-        System.out.println(maze[N - 1][M - 1]);
-    }
+        int[] dx = { 1, 0, -1, 0 };
+        int[] dy = { 0, 1, 0, -1 };
 
-    static void BFS(int x, int y) {
-        que.offer(new Node(x, y));
-        visit[y][x] = true;
+        Queue<MazePoint> queue = new LinkedList<>();
 
-        while (!que.isEmpty()) {
-            Node node = que.poll();
-
-            for (int i = 0; i < 4; i++) {
-                now_y = node.y + dirY[i];
-                now_x = node.x + dirX[i];
-
-                if (Range_check() == true && visit[now_y][now_x] == false && maze[now_y][now_x] == 1) {
-                    que.offer(new Node(now_x, now_y));
-                    visit[now_y][now_x] = true;
-
-                    maze[now_y][now_x] = maze[node.y][node.x] + 1;
-                    if (visit[N - 1][M - 1] == true) {
-                        return;
+        queue.add(new MazePoint(1, 1));
+        visited[1][1] = true;
+        while (!queue.isEmpty()) {
+            MazePoint point = queue.remove();
+            for (int i = 0; i < dx.length; i++) {
+                int xx = point.x + dx[i];
+                int yy = point.y + dy[i];
+                if (xx > 0 && yy > 0 && xx <= m && yy <= n) {
+                    if (graph[yy][xx] != 0 && !visited[yy][xx]) {
+                        visited[yy][xx] = true;
+                        graph[yy][xx] = graph[point.y][point.x] + 1;
+                        queue.add(new MazePoint(xx, yy));
                     }
-
                 }
             }
         }
+        bw.write(String.valueOf(graph[n][m]));
+        bw.flush();
+        bw.close();
     }
+}
 
-    public static boolean Range_check() {
-        return (now_x >= 0 && now_x < M && now_y >= 0 && now_y < N);
+class MazePoint {
+    int x;
+    int y;
+
+    MazePoint(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 }
