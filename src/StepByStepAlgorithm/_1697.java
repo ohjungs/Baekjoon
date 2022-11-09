@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Scanner;
 
 public class _1697 {
     // 문제
@@ -18,51 +19,49 @@ public class _1697 {
     // 수빈이가 동생을 찾는 가장 빠른 시간을 출력한다.
     static int N;
     static int K;
+    static int[] check = new int[100001];
 
-    static int visited[] = new int[100001];
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        N = sc.nextInt();
+        K = sc.nextInt();
 
-    // X-1, X+1
-    // 2*X
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        String input = br.readLine();
-        String[] inputs = input.split(" ");
-
-        N = Integer.valueOf(inputs[0]);
-        K = Integer.valueOf(inputs[1]);
-
-        int result = bfs(N);
-        System.out.println(result);
+        if (N == K) {
+            System.out.println(0);
+        } else {
+            bfs(N);
+        }
     }
 
-    private static int bfs(int node) {
-        Queue<Integer> queue = new LinkedList<Integer>();
+    static void bfs(int num) {
+        Queue<Integer> q = new LinkedList<>();
+        q.add(num);
+        check[num] = 1;
 
-        queue.add(node);
-        int index = node;
-        int n = 0;
-        visited[index] = 1;
-        while (queue.isEmpty() == false) {
-            n = queue.remove();
+        while (!q.isEmpty()) {
+            int temp = q.poll();
 
-            if (n == K) {
-                return visited[n] - 1;
-            }
+            for (int i = 0; i < 3; i++) {
+                int next;
 
-            if (n - 1 >= 0 && visited[n - 1] == 0) {
-                visited[n - 1] = visited[n] + 1;
-                queue.add(n - 1);
-            }
-            if (n + 1 <= 100000 && visited[n + 1] == 0) {
-                visited[n + 1] = visited[n] + 1;
-                queue.add(n + 1);
-            }
-            if (2 * n <= 100000 && visited[2 * n] == 0) {
-                visited[2 * n] = visited[n] + 1;
-                queue.add(2 * n);
+                if (i == 0) {
+                    next = temp + 1;
+                } else if (i == 1) {
+                    next = temp - 1;
+                } else {
+                    next = temp * 2;
+                }
+
+                if (next == K) {
+                    System.out.println(check[temp]);
+                    return;
+                }
+
+                if (next >= 0 && next < check.length && check[next] == 0) {
+                    q.add(next);
+                    check[next] = check[temp] + 1;
+                }
             }
         }
-        return -1;
     }
 }
