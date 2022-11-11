@@ -18,50 +18,40 @@ public class _1697 {
     // 첫 번째 줄에 수빈이가 있는 위치 N과 동생이 있는 위치 K가 주어진다. N과 K는 정수이다.
     // 출력
     // 수빈이가 동생을 찾는 가장 빠른 시간을 출력한다.
-    static int n, k;
-    static int[] arr;
-    static Queue<Integer> q = new LinkedList<>();
-
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        n = Integer.parseInt(st.nextToken());
-        k = Integer.parseInt(st.nextToken());
-
-        if (n >= k) {
-            System.out.println(n - k);
-        } else {
-            System.out.println(bfs());
-        }
-
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    StringTokenizer st = new StringTokenizer(br.readLine());
+    int n = Integer.parseInt(st.nextToken());
+    int k = Integer.parseInt(st.nextToken());if(n==k)
+    {
+        System.out.println(0);
+        return;
     }
-
-    static int bfs() {
-
-        // 시간을 저장하는 배열선언
-        arr = new int[100001];
-        q.add(n);
-        arr[n] = 1;
-        while (!q.isEmpty()) {
-            int x = q.poll();
-            for (int i = 0; i < 3; i++) {
-                int nx;
-                if (i == 0)
-                    nx = x - 1;
-                else if (i == 1)
-                    nx = x + 1;
-                else
-                    nx = x * 2;
-
-                if (nx == k)
-                    return arr[x];
-
-                if (nx >= 0 && nx < 100001 && arr[nx] == 0) {
-                    arr[nx] = arr[x] + 1;
-                    q.add(nx);
-                }
+    boolean[] visited = new boolean[100001];visited[n]=true;
+    Queue<Integer> q = new LinkedList<>();q.add(n);
+    int size = q.size();
+    int count = 0;while(true)
+    {
+        count++;
+        size = q.size();
+        for (int i = 0; i < size; i++) {
+            int x = q.remove();
+            visited[x] = true;
+            if (x - 1 == k || x + 1 == k || x * 2 == k) {
+                System.out.println(count);
+                return;
+            }
+            if (x - 1 >= 0 && !visited[x - 1]) {
+                visited[x - 1] = true;
+                q.add(x - 1);
+            }
+            if (x + 1 <= 100000 && !visited[x + 1]) {
+                visited[x + 1] = true;
+                q.add(x + 1);
+            }
+            if (x * 2 <= 100000 && !visited[x * 2]) {
+                visited[x * 2] = true;
+                q.add(x * 2);
             }
         }
-        return 0;
     }
 }
