@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class _1697 {
     // 문제
@@ -17,51 +18,50 @@ public class _1697 {
     // 첫 번째 줄에 수빈이가 있는 위치 N과 동생이 있는 위치 K가 주어진다. N과 K는 정수이다.
     // 출력
     // 수빈이가 동생을 찾는 가장 빠른 시간을 출력한다.
-    static int N;
-    static int K;
-    static int[] check = new int[100001];
+    static int n, k;
+    static int[] arr;
+    static Queue<Integer> q = new LinkedList<>();
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        N = sc.nextInt();
-        K = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(st.nextToken());
+        k = Integer.parseInt(st.nextToken());
 
-        if (N == K) {
-            System.out.println(0);
+        if (n >= k) {
+            System.out.println(n - k);
         } else {
-            bfs(N);
+            System.out.println(bfs());
         }
+
     }
 
-    static void bfs(int num) {
-        Queue<Integer> q = new LinkedList<>();
-        q.add(num);
-        check[num] = 1;
+    static int bfs() {
 
+        // 시간을 저장하는 배열선언
+        arr = new int[100001];
+        q.add(n);
+        arr[n] = 1;
         while (!q.isEmpty()) {
-            int temp = q.poll();
-
+            int x = q.poll();
             for (int i = 0; i < 3; i++) {
-                int next;
+                int nx;
+                if (i == 0)
+                    nx = x - 1;
+                else if (i == 1)
+                    nx = x + 1;
+                else
+                    nx = x * 2;
 
-                if (i == 0) {
-                    next = temp + 1;
-                } else if (i == 1) {
-                    next = temp - 1;
-                } else {
-                    next = temp * 2;
-                }
+                if (nx == k)
+                    return arr[x];
 
-                if (next == K) {
-                    System.out.println(check[temp]);
-                    return;
-                }
-
-                if (next >= 0 && next < check.length && check[next] == 0) {
-                    q.add(next);
-                    check[next] = check[temp] + 1;
+                if (nx >= 0 && nx < 100001 && arr[nx] == 0) {
+                    arr[nx] = arr[x] + 1;
+                    q.add(nx);
                 }
             }
         }
+        return 0;
     }
 }
