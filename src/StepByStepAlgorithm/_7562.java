@@ -25,76 +25,81 @@ public class _7562 {
     // 각 테스트 케이스마다 나이트가 최소 몇 번만에 이동할 수 있는지 출력한다.
     //
     // 나이트가 이동할 수 있는 경우의 수를 설정해준다.
-    static int[] dx = { -2, -1, 2, 1, 2, 1, -2, -1 };
-    static int[] dy = { 1, 2, 1, 2, -1, -2, -1, -2 };
-    static int[][] map;
-    static boolean[][] visited;
+    static int tt;
     static int n;
-    static int start_x, start_y, end_x, end_y;
-    static int count = 0;
-    static Queue<dot> q = new LinkedList<dot>();
+    static int x1, y1;
+    static int x2, y2;
+
+    static int[] dx = { -1, -2, -2, -1, 1, 2, 2, 1 };
+    static int[] dy = { -2, -1, 1, 2, 2, 1, -1, -2 };
+
+    static int[][] visited = new int[301][301];
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        tt = Integer.parseInt(st.nextToken());
 
-        int t = Integer.parseInt(br.readLine());
-
-        for (int i = 0; i < t; i++) {
-            n = Integer.parseInt(br.readLine());
-            map = new int[n][n];
-            visited = new boolean[n][n];
-
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            start_x = Integer.parseInt(st.nextToken());
-            start_y = Integer.parseInt(st.nextToken());
+        while (tt-- != 0) {
+            st = new StringTokenizer(br.readLine());
+            n = Integer.parseInt(st.nextToken());
 
             st = new StringTokenizer(br.readLine());
-            end_x = Integer.parseInt(st.nextToken());
-            end_y = Integer.parseInt(st.nextToken());
+            x1 = Integer.parseInt(st.nextToken());
+            y1 = Integer.parseInt(st.nextToken());
 
-            bfs(new dot(start_x, start_y));
-            System.out.println(map[end_x][end_y]);
+            st = new StringTokenizer(br.readLine());
+            x2 = Integer.parseInt(st.nextToken());
+            y2 = Integer.parseInt(st.nextToken());
+
+            cleanVisited();
+
+            bfs(x1, y1, x2, y2);
+
+            System.out.println(visited[x2][y2]);
         }
 
     }
 
-    static void bfs(dot d) {
-        // 미리 설정해둔 도착지가 되면 return해준다.
-        if (d.x == end_x && d.y == end_y) {
-            return;
-        }
-        visited[d.x][d.y] = true;
+    public static void bfs(int a, int b, int c, int d) {
 
-        q.add(d);
+        Queue<Point> q = new LinkedList<>();
+        q.add(new Point(a, b));
+        visited[a][b] = 0;
 
         while (!q.isEmpty()) {
-            dot t = q.remove();
-            int x1 = t.x;
-            int y1 = t.y;
+            Point p = q.poll();
 
-            for (int i = 0; i < dx.length; i++) {
-                int x2 = x1 + dx[i];
-                int y2 = y1 + dy[i];
+            if (p.x == c && p.y == d)
+                break;
 
-                if (x2 >= 0 && x2 < n && y2 >= 0 && y2 < n && !visited[x2][y2]) {
-                    q.add(new dot(x2, y2));
-                    visited[x2][y2] = true;
-                    // 전의 이동 횟수에 +1 씩 더해주며 이동 횟수를 증가시켜준다.
-                    map[x2][y2] = map[x1][y1] + 1;
+            for (int i = 0; i < 8; i++) {
+                int nx = p.x + dx[i];
+                int ny = p.y + dy[i];
+
+                if (0 <= nx && nx < n && 0 <= ny & ny < n &&
+                        (visited[nx][ny] == -1 || visited[p.x][p.y] + 1 < visited[nx][ny])) {
+                    visited[nx][ny] = visited[p.x][p.y] + 1;
+                    q.add(new Point(nx, ny));
                 }
             }
+
         }
 
     }
 
-}
+    public static void cleanVisited() {
+        for (int i = 0; i <= 300; i++)
+            for (int j = 0; j <= 300; j++)
+                visited[i][j] = -1;
+    }
 
-class dot {
-    int x;
-    int y;
+    static class Point {
+        int x, y;
 
-    public dot(int x, int y) {
-        this.x = x;
-        this.y = y;
+        public Point(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
     }
 }
