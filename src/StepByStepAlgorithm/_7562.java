@@ -1,6 +1,7 @@
 package StepByStepAlgorithm;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -25,81 +26,57 @@ public class _7562 {
     // 각 테스트 케이스마다 나이트가 최소 몇 번만에 이동할 수 있는지 출력한다.
     //
     // 나이트가 이동할 수 있는 경우의 수를 설정해준다.
-    static int tt;
-    static int n;
-    static int x1, y1;
-    static int x2, y2;
+    static int[] dr = { -1, -2, -2, -1, 1, 2, 2, 1 };
+    static int[] dc = { -2, -1, 1, 2, 2, 1, -1, -2 };
 
-    static int[] dx = { -1, -2, -2, -1, 1, 2, 2, 1 };
-    static int[] dy = { -2, -1, 1, 2, 2, 1, -1, -2 };
-
-    static int[][] visited = new int[301][301];
-
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        tt = Integer.parseInt(st.nextToken());
+        StringTokenizer st;
 
-        while (tt-- != 0) {
+        int T = Integer.parseInt(br.readLine());
+        for (int i = 0; i < T; i++) {
+            int n = Integer.parseInt(br.readLine());
             st = new StringTokenizer(br.readLine());
-            n = Integer.parseInt(st.nextToken());
-
+            int start_r = Integer.parseInt(st.nextToken());
+            int start_c = Integer.parseInt(st.nextToken());
             st = new StringTokenizer(br.readLine());
-            x1 = Integer.parseInt(st.nextToken());
-            y1 = Integer.parseInt(st.nextToken());
-
-            st = new StringTokenizer(br.readLine());
-            x2 = Integer.parseInt(st.nextToken());
-            y2 = Integer.parseInt(st.nextToken());
-
-            cleanVisited();
-
-            bfs(x1, y1, x2, y2);
-
-            System.out.println(visited[x2][y2]);
+            int end_r = Integer.parseInt(st.nextToken());
+            int end_c = Integer.parseInt(st.nextToken());
+            bfs(n, new Node(start_r, start_c, 0), new int[] { end_r, end_c });
         }
-
     }
 
-    public static void bfs(int a, int b, int c, int d) {
+    public static void bfs(int n, Node start, int[] end) {
+        boolean[][] visited = new boolean[n][n];
 
-        Queue<Point> q = new LinkedList<>();
-        q.add(new Point(a, b));
-        visited[a][b] = 0;
+        Queue<Node> q = new LinkedList<>();
+        q.add(start);
+        visited[start.r][start.c] = true;
 
         while (!q.isEmpty()) {
-            Point p = q.poll();
-
-            if (p.x == c && p.y == d)
-                break;
-
+            Node tmp = q.poll();
+            if (tmp.r == end[0] && tmp.c == end[1]) {
+                System.out.println(tmp.cnt);
+                return;
+            }
             for (int i = 0; i < 8; i++) {
-                int nx = p.x + dx[i];
-                int ny = p.y + dy[i];
-
-                if (0 <= nx && nx < n && 0 <= ny & ny < n &&
-                        (visited[nx][ny] == -1 || visited[p.x][p.y] + 1 < visited[nx][ny])) {
-                    visited[nx][ny] = visited[p.x][p.y] + 1;
-                    q.add(new Point(nx, ny));
+                int newR = tmp.r + dr[i];
+                int newC = tmp.c + dc[i];
+                if (0 <= newR && newR < n && 0 <= newC && newC < n && !visited[newR][newC]) {
+                    q.add(new Node(newR, newC, tmp.cnt + 1));
+                    visited[newR][newC] = true;
                 }
             }
-
         }
-
     }
 
-    public static void cleanVisited() {
-        for (int i = 0; i <= 300; i++)
-            for (int j = 0; j <= 300; j++)
-                visited[i][j] = -1;
-    }
+    public static class Node {
+        int r, c, cnt;
 
-    static class Point {
-        int x, y;
-
-        public Point(int x, int y) {
-            this.x = x;
-            this.y = y;
+        public Node(int r, int c, int cnt) {
+            this.r = r;
+            this.c = c;
+            this.cnt = cnt;
         }
     }
 }
